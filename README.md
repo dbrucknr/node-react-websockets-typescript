@@ -1,4 +1,4 @@
-# Steps to create the base project:
+# Steps to create the base server project:
 
 Step 1: `mkdir server && cd server`
 
@@ -13,3 +13,7 @@ Step 5: `tsc --init`
 - Configure TS file
 - Configure package.json "start" command to use nodemon dev-dependency
 - Add nodemon.json file with rules
+
+Step 6: `npm i express cors`
+
+Step 7: `npm i -D @types/express @types/cors`
