@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { messageThreadRoutes } from "./messageThread.routes";
+import { threadRoutes } from "./thread.routes";
+import { userRoutes } from "./user.routes";
 
-const appRouteList = [messageThreadRoutes];
+const appRouteList = [threadRoutes, userRoutes];
 
 export const routes = (router: Router) =>
   appRouteList.forEach((section) => section(router));

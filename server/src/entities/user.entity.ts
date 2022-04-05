@@ -26,6 +26,4 @@ export class User {
 
   @Column()
   password: string;
-
-  @OneToMany(() => ThreadParticipant)
 }
