@@ -19,7 +19,7 @@ export class Thread {
 
   @ManyToMany(() => User)
   @JoinTable({
-    name: "Participants",
+    name: "participant",
     joinColumn: { name: "threadId", referencedColumnName: "id" },
     inverseJoinColumn: { name: "userId", referencedColumnName: "id" },
   })
