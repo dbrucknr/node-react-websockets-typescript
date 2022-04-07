@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 
-const database = new DataSource({
+export const database = new DataSource({
   type: "postgres",
   host: "localhost",
   port: 5432,
