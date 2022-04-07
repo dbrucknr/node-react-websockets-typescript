@@ -21,7 +21,8 @@ export class Message {
   @Column()
   content: string;
 
-  @OneToOne(() => User, (user) => user)
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "senderId" })
   sender: User;
 
   @CreateDateColumn()

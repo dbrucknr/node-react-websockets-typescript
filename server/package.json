@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
+    "app:seed": "ts-node src/database/seeders/addDummyData.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
