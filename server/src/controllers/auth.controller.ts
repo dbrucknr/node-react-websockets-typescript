@@ -1,13 +1,55 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
-import { registrationSchema } from "../validation/registration.validation";
+import { UserRepository } from "../database/repositories/repository";
+import bcryptjs from "bcryptjs";
+import { sign, verify } from "jsonwebtoken";
 
 export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    return res.json({ message: "Register Logic", request: req.body });
+    const { firstName, lastName, email, password } = req.body;
+    const existingUser = await UserRepository.findOne({
+      where: { email: email },
+    });
+
+    if (existingUser) {
+      return res.status(401).send({
+        status: "Registration failed.",
+        message: "User already exists with this email",
+      });
+    }
+
+    const { password: _, ...newUser } = await UserRepository.save({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: await bcryptjs.hash(password, 10),
+    });
+    return res.send({
+      status: "Success",
+      message: "Registration succeeded",
+      user: newUser,
+    });
   });
 
 export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    return res.json({ message: "Login Logic", request: req.body });
+    const { email, password } = req.body;
+    const user = await UserRepository.findOne({ where: { email: email } });
+    const validatePassword = user
+      ? await bcryptjs.compare(password, user.password)
+      : res.status(400).send("Invalid Login Attempt");
+    const token = validatePassword && sign({ id: user.id }, "secret");
+
+    return res
+      .cookie("jwt-messenger", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .send({ message: "Login Logic", request: req.body });
+  });
+
+export const logout = async (req: Request, res: Response) =>
+  await attemptRequest(req, res, async () => {
+    res.cookie("jwt-messenger", "", { maxAge: 0 });
+    return res.send({ status: "Success", message: "Logout successful" });
   });
