@@ -6,3 +6,8 @@ export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     return res.json({ message: "Register Logic", request: req.body });
   });
+
+export const login = async (req: Request, res: Response) =>
+  await attemptRequest(req, res, async () => {
+    return res.json({ message: "Login Logic", request: req.body });
+  });
