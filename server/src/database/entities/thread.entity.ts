@@ -17,7 +17,6 @@ export class Thread {
   @Column()
   type: string;
 
-  // Add Cascade property
   @ManyToMany(() => User, { cascade: true })
   @JoinTable({
     name: "participant",
@@ -26,9 +25,7 @@ export class Thread {
   })
   participants: User[];
 
-  // Add Cascade property
   @OneToMany(() => Message, (message) => message.thread, {
-    eager: true,
     cascade: true,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

@@ -7,23 +7,28 @@ export const isAuthenticated = async (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.cookies["jwt-messenger"];
-  //   const token = authHeader && authHeader.split(" ")[1];
+  try {
+    const authHeader = req.cookies["jwt-messenger"];
 
-  //   if (!token) {
-  //     return res
-  //       .status(401)
-  //       .send({ status: "Failed Auth Status", message: "Missing Token" });
-  //   }
+    if (!authHeader) {
+      return res
+        .status(401)
+        .send({ status: "Failed Auth Status", message: "Unauthenticated" });
+    }
 
-  verify(authHeader, "secret", (error, user) => {
-    console.log("verify", user);
-    return error
-      ? res.status(401).send({
-          status: "Failed Token Verify",
-          message: "Cannot verify token",
-        })
-      : (req["user"] = user);
-  });
+    verify(authHeader, "secret", (error, user) => {
+      console.log("verify", user);
+      return error
+        ? res.status(401).send({
+            status: "Failed Token Verify",
+            message: "Cannot verify token",
+          })
+        : (req["user"] = user);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ status: "Error", message: "Failed to verify auth status" });
+  }
   next();
 };
