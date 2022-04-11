@@ -3,5 +3,10 @@ import { attemptRequest } from "../utilities/attemptRequest";
 
 export const retrieveUserData = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    return res.json({ message: "User Data", request: req.body });
+    const checkCookieProcess = req["user"];
+    return res.json({
+      message: "User Data",
+      request: req.body,
+      cookie: checkCookieProcess,
+    });
   });

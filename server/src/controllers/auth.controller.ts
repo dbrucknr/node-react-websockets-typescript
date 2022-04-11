@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import { UserRepository } from "../database/repositories/repository";
 import bcryptjs from "bcryptjs";
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 
 export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
