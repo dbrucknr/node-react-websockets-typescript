@@ -21,6 +21,12 @@ export const seedExampleUsers = async () => {
         email: "derek.bruckner@email.com",
         password: await bcryptjs.hash("secret", 10),
       },
+      {
+        firstName: "New",
+        lastName: "User",
+        email: "new.user@email.com",
+        password: await bcryptjs.hash("secret", 10),
+      },
     ];
 
     await Promise.all(

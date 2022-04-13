@@ -17,19 +17,36 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
 
     const userThreads = await ThreadRepository.createQueryBuilder("thread")
       .leftJoinAndSelect("thread.participants", "participant")
+      .where("participant.id = :userId", { userId: user.id })
       .getMany();
+
+    const threadsWithParticipants = await Promise.all(
+      userThreads.map(
+        async (thread) =>
+          await ThreadRepository.findOne({
+            relations: {
+              participants: true,
+            },
+            where: {
+              id: thread.id,
+            },
+          })
+      )
+    );
 
     return res.json({
       message: "Users Thread Data",
-      threads: userThreads.map(({ participants, ...threads }) => {
-        let usersWithoutPasswords = participants.map(
-          ({ password, ...data }) => data
-        );
-        return {
-          ...threads,
-          participants: usersWithoutPasswords,
-        };
-      }),
+      threadsWithParticipants,
+      userThreads,
+      // threads: userThreads.map(({ participants, ...threads }) => {
+      //   let usersWithoutPasswords = participants.map(
+      //     ({ password, ...data }) => data
+      //   );
+      //   return {
+      //     ...threads,
+      //     participants: usersWithoutPasswords,
+      //   };
+      // }),
     });
   });
 
