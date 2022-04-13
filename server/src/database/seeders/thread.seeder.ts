@@ -1,4 +1,8 @@
-import { UserRepository, ThreadRepository } from "../repositories/repository";
+import {
+  UserRepository,
+  ThreadRepository,
+  ParticipantRepository,
+} from "../repositories/repository";
 
 export const seedExampleThreads = async () => {
   try {
@@ -23,8 +27,27 @@ export const seedExampleThreads = async () => {
       Promise.resolve(
         await ThreadRepository.save({
           type: "standard",
-          participants: threadParticipants,
-          messages: [],
+          // participants: threadParticipants,
+          // messages: [],
+        })
+      );
+      const thread = await ThreadRepository.findOne({
+        where: {
+          id: 1,
+        },
+      });
+
+      Promise.resolve(
+        await ParticipantRepository.save({
+          thread: thread,
+          user: findJennifer,
+        })
+      );
+
+      Promise.resolve(
+        await ParticipantRepository.save({
+          thread: thread,
+          user: findDerek,
         })
       );
     }

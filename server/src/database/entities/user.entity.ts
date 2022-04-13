@@ -1,4 +1,14 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  JoinTable,
+} from "typeorm";
+import { Participant } from "./participant.entity";
+import { Thread } from "./thread.entity";
 
 @Entity()
 export class User {
@@ -19,4 +29,11 @@ export class User {
 
   @Column()
   password: string;
+
+  @ManyToMany(() => Thread, (thread) => thread.users)
+  @JoinTable()
+  threads: Thread[];
+
+  @OneToMany(() => Participant, (participant) => participant.user)
+  threadParticipant: Participant[];
 }

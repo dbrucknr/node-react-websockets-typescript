@@ -3,8 +3,10 @@ import { attemptRequest } from "../utilities/attemptRequest";
 import {
   ThreadRepository,
   MessageRepository,
+  UserRepository,
 } from "../database/repositories/repository";
 import { Thread } from "../database/entities/thread.entity";
+import { In, Any } from "typeorm";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -14,6 +16,13 @@ export const createThread = async (req: Request, res: Response) =>
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const user = req["user"];
+    console.log(user);
+    const test = await UserRepository.find({
+      relations: {
+        threads: true,
+        // messages: true,
+      },
+    });
 
     const userThreads = await ThreadRepository.createQueryBuilder("thread")
       .leftJoinAndSelect("thread.participants", "participant")
@@ -21,15 +30,17 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
 
     return res.json({
       message: "Users Thread Data",
-      threads: userThreads.map(({ participants, ...threads }) => {
-        let usersWithoutPasswords = participants.map(
-          ({ password, ...data }) => data
-        );
-        return {
-          ...threads,
-          participants: usersWithoutPasswords,
-        };
-      }),
+      test: test,
+      userThreads,
+      // threads: userThreads.map(({ participants, ...threads }) => {
+      //   let usersWithoutPasswords = participants.map(
+      //     ({ password, ...data }) => data
+      //   );
+      //   return {
+      //     ...threads,
+      //     participants: usersWithoutPasswords,
+      //   };
+      // }),
     });
   });
 
