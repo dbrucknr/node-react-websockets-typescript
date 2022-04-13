@@ -14,45 +14,22 @@ export const createThread = async (req: Request, res: Response) =>
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const user = req["user"];
-    const userThreads = await ThreadRepository.createQueryBuilder("thread")
-      .leftJoin(
-        "thread.participants",
-        "participant",
-        "thread_participant.userId = :userId",
-        {
-          userId: user.id,
-        }
-      )
-      .getMany();
 
-    const threadsWithParticipants = await Promise.all(
-      userThreads.map(
-        async (thread) =>
-          await ThreadRepository.findOne({
-            relations: {
-              participants: true,
-            },
-            where: {
-              id: thread.id,
-            },
-          })
-      )
-    );
+    const userThreads = await ThreadRepository.createQueryBuilder("thread")
+      .leftJoinAndSelect("thread.participants", "participant")
+      .getMany();
 
     return res.json({
       message: "Users Thread Data",
-      // threads: threadsWithParticipants,
-      threadsTest: threadsWithParticipants.map(
-        ({ participants, ...threads }) => {
-          let hiddenPasswords = participants.map(
-            ({ password, ...data }) => data
-          );
-          return {
-            ...threads,
-            participants: hiddenPasswords,
-          };
-        }
-      ),
+      threads: userThreads.map(({ participants, ...threads }) => {
+        let usersWithoutPasswords = participants.map(
+          ({ password, ...data }) => data
+        );
+        return {
+          ...threads,
+          participants: usersWithoutPasswords,
+        };
+      }),
     });
   });
 
