@@ -3,11 +3,21 @@ import { attemptRequest } from "../utilities/attemptRequest";
 import {
   ThreadRepository,
   MessageRepository,
+  UserRepository,
 } from "../database/repositories/repository";
-import { Thread } from "../database/entities/thread.entity";
+import { User } from "../database/entities/user.entity";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
+    const { threadCreator } = req["user"];
+    // Assumes no group...
+    const { threadParticipants } = req.body;
+
+    const thread = await ThreadRepository.save({
+      type: "standard",
+      participants: [],
+      messages: [],
+    });
     return res.json({ message: "Create Thread", request: req.body });
   });
 
@@ -20,7 +30,7 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
       .where("participant.id = :userId", { userId: user.id })
       .getMany();
 
-    const threadsWithParticipants = await Promise.all(
+    const userThreadsWithParticipants = await Promise.all(
       userThreads.map(
         async (thread) =>
           await ThreadRepository.findOne({
@@ -36,17 +46,17 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
 
     return res.json({
       message: "Users Thread Data",
-      threadsWithParticipants,
-      userThreads,
-      // threads: userThreads.map(({ participants, ...threads }) => {
-      //   let usersWithoutPasswords = participants.map(
-      //     ({ password, ...data }) => data
-      //   );
-      //   return {
-      //     ...threads,
-      //     participants: usersWithoutPasswords,
-      //   };
-      // }),
+      threads: userThreadsWithParticipants.map(
+        ({ participants, ...threads }) => {
+          let usersWithoutPasswords = participants.map(
+            ({ password, ...data }) => data
+          );
+          return {
+            ...threads,
+            participants: usersWithoutPasswords,
+          };
+        }
+      ),
     });
   });
 
