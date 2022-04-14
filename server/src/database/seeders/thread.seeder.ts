@@ -27,8 +27,9 @@ export const seedExampleThreads = async () => {
       Promise.resolve(
         await ThreadRepository.save({
           type: "standard",
-          // participants: threadParticipants,
-          // messages: [],
+          users: [findJennifer, findDerek],
+          participants: threadParticipants,
+          messages: [],
         })
       );
       const thread = await ThreadRepository.findOne({
@@ -48,6 +49,64 @@ export const seedExampleThreads = async () => {
         await ParticipantRepository.save({
           thread: thread,
           user: findDerek,
+        })
+      );
+
+      let secondThreadParticipants = [];
+      const findChase = await UserRepository.findOne({
+        where: {
+          email: "chase.pietrangelo@email.com",
+        },
+      });
+      secondThreadParticipants.push(findChase);
+      const findBen = await UserRepository.findOne({
+        where: {
+          email: "ben.fielstra@email.com",
+        },
+      });
+      secondThreadParticipants.push(findBen);
+      const findGreg = await UserRepository.findOne({
+        where: {
+          email: "greg.white@email.com",
+        },
+      });
+      secondThreadParticipants.push(findGreg);
+
+      if (secondThreadParticipants.length == 3) {
+        Promise.resolve(
+          await ThreadRepository.save({
+            type: "group",
+            users: [findChase, findBen, findGreg],
+            participants: secondThreadParticipants,
+            messages: [],
+          })
+        );
+      }
+
+      const secondThread = await ThreadRepository.findOne({
+        where: {
+          id: 2,
+        },
+      });
+
+      Promise.resolve(
+        await ParticipantRepository.save({
+          thread: secondThread,
+          user: findChase,
+        })
+      );
+
+      Promise.resolve(
+        await ParticipantRepository.save({
+          thread: secondThread,
+          user: findBen,
+        })
+      );
+
+      Promise.resolve(
+        await ParticipantRepository.save({
+          thread: secondThread,
+          user: findGreg,
         })
       );
     }

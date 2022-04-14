@@ -14,6 +14,7 @@ export const seedExampleUsers = async () => {
         lastName: "Godlew",
         email: "jennifer.godlew@email.com",
         password: await bcryptjs.hash("secret", 10),
+        threads: [],
       },
       {
         firstName: "Derek",
@@ -22,9 +23,27 @@ export const seedExampleUsers = async () => {
         password: await bcryptjs.hash("secret", 10),
       },
       {
-        firstName: "New",
-        lastName: "User",
-        email: "new.user@email.com",
+        firstName: "Chase",
+        lastName: "Pietrangelo",
+        email: "chase.pietrangelo@email.com",
+        password: await bcryptjs.hash("secret", 10),
+      },
+      {
+        firstName: "Ben",
+        lastName: "Fielstra",
+        email: "ben.fielstra@email.com",
+        password: await bcryptjs.hash("secret", 10),
+      },
+      {
+        firstName: "Greg",
+        lastName: "White",
+        email: "greg.white@email.com",
+        password: await bcryptjs.hash("secret", 10),
+      },
+      {
+        firstName: "Mark",
+        lastName: "Godlew",
+        email: "mark.godlew@email.com",
         password: await bcryptjs.hash("secret", 10),
       },
     ];

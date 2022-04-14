@@ -34,6 +34,6 @@ export class User {
   @JoinTable()
   threads: Thread[];
 
-  @OneToMany(() => Participant, (participant) => participant.user)
+  @OneToMany(() => Participant, (participant) => participant.thread)
   threadParticipant: Participant[];
 }

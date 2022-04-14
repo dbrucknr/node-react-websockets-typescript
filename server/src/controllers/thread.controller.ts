@@ -17,30 +17,22 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const user = req["user"];
     console.log(user);
-    const test = await UserRepository.find({
+    const threads = await UserRepository.find({
       relations: {
-        threads: true,
-        // messages: true,
+        threads: {
+          participants: {
+            user: true,
+          },
+        },
+      },
+      where: {
+        id: user.id,
       },
     });
 
-    const userThreads = await ThreadRepository.createQueryBuilder("thread")
-      .leftJoinAndSelect("thread.participants", "participant")
-      .getMany();
-
     return res.json({
       message: "Users Thread Data",
-      test: test,
-      userThreads,
-      // threads: userThreads.map(({ participants, ...threads }) => {
-      //   let usersWithoutPasswords = participants.map(
-      //     ({ password, ...data }) => data
-      //   );
-      //   return {
-      //     ...threads,
-      //     participants: usersWithoutPasswords,
-      //   };
-      // }),
+      threads,
     });
   });
 

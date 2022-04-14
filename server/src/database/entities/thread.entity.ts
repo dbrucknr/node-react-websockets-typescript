@@ -17,7 +17,7 @@ export class Thread {
   @Column()
   type: string;
 
-  @ManyToMany(() => User, (user) => user.threads)
+  @ManyToMany(() => User, (user) => user.threadParticipant)
   users: User[];
 
   @OneToMany(() => Participant, (participant) => participant.thread)
