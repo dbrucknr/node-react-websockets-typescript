@@ -5,8 +5,6 @@ import {
   MessageRepository,
   UserRepository,
 } from "../database/repositories/repository";
-import { Thread } from "../database/entities/thread.entity";
-import { In, Any } from "typeorm";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -16,7 +14,6 @@ export const createThread = async (req: Request, res: Response) =>
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const user = req["user"];
-    console.log(user);
     const threads = await UserRepository.find({
       relations: {
         threads: {
