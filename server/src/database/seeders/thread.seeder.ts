@@ -4,6 +4,7 @@ import {
 } from "../repositories/repository";
 import { findUser } from "./user.helpers";
 import { findThread } from "./thread.helpers";
+
 export const seedExampleThreads = async () => {
   try {
     const jennifer = await findUser("jennifer.godlew@email.com");
