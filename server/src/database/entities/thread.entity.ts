@@ -1,13 +1,13 @@
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./user.entity";
 import { Message } from "./message.entity";
+import { Participant } from "./participant.entity";
 
 @Entity()
 export class Thread {
@@ -17,13 +17,11 @@ export class Thread {
   @Column()
   type: string;
 
-  @ManyToMany(() => User, { cascade: true })
-  @JoinTable({
-    name: "participant",
-    joinColumn: { name: "threadId", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "userId", referencedColumnName: "id" },
-  })
-  participants: User[];
+  @ManyToMany(() => User, (user) => user.threadParticipant)
+  users: User[];
+
+  @OneToMany(() => Participant, (participant) => participant.thread)
+  participants: Participant[];
 
   @OneToMany(() => Message, (message) => message.thread, {
     cascade: true,

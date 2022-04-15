@@ -5,7 +5,6 @@ import {
   MessageRepository,
   UserRepository,
 } from "../database/repositories/repository";
-import { User } from "../database/entities/user.entity";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -24,39 +23,22 @@ export const createThread = async (req: Request, res: Response) =>
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const user = req["user"];
-
-    const userThreads = await ThreadRepository.createQueryBuilder("thread")
-      .leftJoinAndSelect("thread.participants", "participant")
-      .where("participant.id = :userId", { userId: user.id })
-      .getMany();
-
-    const userThreadsWithParticipants = await Promise.all(
-      userThreads.map(
-        async (thread) =>
-          await ThreadRepository.findOne({
-            relations: {
-              participants: true,
-            },
-            where: {
-              id: thread.id,
-            },
-          })
-      )
-    );
+    const threads = await UserRepository.find({
+      relations: {
+        threads: {
+          participants: {
+            user: true,
+          },
+        },
+      },
+      where: {
+        id: user.id,
+      },
+    });
 
     return res.json({
       message: "Users Thread Data",
-      threads: userThreadsWithParticipants.map(
-        ({ participants, ...threads }) => {
-          let usersWithoutPasswords = participants.map(
-            ({ password, ...data }) => data
-          );
-          return {
-            ...threads,
-            participants: usersWithoutPasswords,
-          };
-        }
-      ),
+      threads,
     });
   });
 
@@ -64,7 +46,7 @@ export const retrieveThreadMessages = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { id } = req.params;
 
-    const messagesWithSender = await ThreadRepository.find({
+    const threadMessages = await ThreadRepository.find({
       relations: {
         messages: {
           sender: true,
@@ -75,15 +57,9 @@ export const retrieveThreadMessages = async (req: Request, res: Response) =>
       },
     });
 
-    const hidePassword = messagesWithSender.map((thread) =>
-      thread.messages.map((message) => {
-        delete message.sender.password;
-      })
-    );
-
     return res.json({
       message: "Thread Messages",
-      messagesWithSender: messagesWithSender,
+      threadMessages,
     });
   });
 

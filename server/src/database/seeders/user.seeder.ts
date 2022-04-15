@@ -1,5 +1,5 @@
 import { UserRepository } from "../repositories/repository";
-import bcryptjs from "bcryptjs";
+import { generateSampleUsers } from "./user.helpers";
 
 export const seedExampleUsers = async () => {
   const existingUserRecords = await UserRepository.find();
@@ -8,26 +8,7 @@ export const seedExampleUsers = async () => {
   }
 
   try {
-    const sampleUsers = [
-      {
-        firstName: "Jennifer",
-        lastName: "Godlew",
-        email: "jennifer.godlew@email.com",
-        password: await bcryptjs.hash("secret", 10),
-      },
-      {
-        firstName: "Derek",
-        lastName: "Bruckner",
-        email: "derek.bruckner@email.com",
-        password: await bcryptjs.hash("secret", 10),
-      },
-      {
-        firstName: "New",
-        lastName: "User",
-        email: "new.user@email.com",
-        password: await bcryptjs.hash("secret", 10),
-      },
-    ];
+    const sampleUsers = await generateSampleUsers();
 
     await Promise.all(
       sampleUsers.map(async (user) => {
