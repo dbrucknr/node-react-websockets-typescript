@@ -37,7 +37,7 @@ export const retrieveThreadMessages = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { id } = req.params;
 
-    const messagesWithSender = await ThreadRepository.find({
+    const threadMessages = await ThreadRepository.find({
       relations: {
         messages: {
           sender: true,
@@ -48,15 +48,9 @@ export const retrieveThreadMessages = async (req: Request, res: Response) =>
       },
     });
 
-    const hidePassword = messagesWithSender.map((thread) =>
-      thread.messages.map((message) => {
-        delete message.sender.password;
-      })
-    );
-
     return res.json({
       message: "Thread Messages",
-      messagesWithSender: messagesWithSender,
+      threadMessages,
     });
   });
 

@@ -36,4 +36,9 @@ export class User {
 
   @OneToMany(() => Participant, (participant) => participant.thread)
   threadParticipant: Participant[];
+
+  toJSON() {
+    delete this.password;
+    return this;
+  }
 }
