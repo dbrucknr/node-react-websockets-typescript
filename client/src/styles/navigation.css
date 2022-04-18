@@ -1,0 +1,52 @@
+
+#navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #3178c6;;
+}
+
+h2 {
+    display: flex;
+    align-self: center;
+    color: white;
+  }
+
+#routes {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#top-left {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-top: .7rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+span {
+    margin-left: 5px;
+}
+
+#selections {
+    display: flex;
+    background-color: #262626;
+    margin: 0; 
+    padding: .7rem 2rem;
+    justify-content: right;
+}
+
+p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+    padding-left: 1rem;
+}
+
+a {
+    color:white;
+    text-decoration: none;
+}
