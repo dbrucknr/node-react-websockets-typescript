@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Navigation } from "./components/base/nav";
-import { NoPageFound } from "./components/base/pageNotFound";
+import { NoPageFound } from "./pages/pageNotFound";
 import { ProtectedPage } from "./components/base/protectedPage";
 import { Login } from "./pages/login";
 import { Messenger } from "./pages/messenger";

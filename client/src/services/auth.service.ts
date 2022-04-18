@@ -1,5 +1,7 @@
-export const AuthService = {
-  login: async () => {},
-  register: async () => {},
-  logout: async () => {},
+export const AuthService = () => {
+  const loginService = async () => {};
+  const registerService = async () => {};
+  const logoutService = async () => {};
+
+  return { loginService, registerService, logoutService };
 };

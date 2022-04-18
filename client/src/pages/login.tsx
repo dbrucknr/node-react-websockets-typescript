@@ -1,7 +1,10 @@
+import { LoginForm } from "../components/auth/LoginForm";
+import "../styles/login-form.css";
+
 export const Login = () => {
   return (
-    <div>
-      <h1>Login</h1>
+    <div id="login-modal">
+      <LoginForm />
     </div>
   );
 };
