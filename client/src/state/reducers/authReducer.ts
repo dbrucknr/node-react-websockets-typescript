@@ -9,8 +9,22 @@ interface IAction {
   payload: any;
 }
 
+// interface User {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   threads: any[];
+//   threadParticipant: any[];
+// }
+
+// firstName: "",
+// lastName: "",
+// email: "",
+// threads: [],
+// threadParticipant: [],
+
 interface IAuthState {
-  user: any; // TODO - set this to a User type (model)
+  user: {}; // TODO - set this to a User type (model)
   isLoggedIn: boolean;
 }
 

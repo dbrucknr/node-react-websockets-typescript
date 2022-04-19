@@ -22,6 +22,7 @@ export const AuthService = () => {
   const loginService = async (credentials: ILoginCredentials) =>
     await attemptServiceRequest(async () => {
       const response = await fetch(`${BASE_URL}/login/user`, {
+        credentials: "include",
         method: "POST",
         headers,
         body: JSON.stringify(credentials),
@@ -29,8 +30,9 @@ export const AuthService = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        return data;
       }
+      return false;
     });
   const registrationService = async (credentials: IRegistrationCredentials) =>
     await attemptServiceRequest(async () => {
