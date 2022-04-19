@@ -15,7 +15,11 @@
 
 form {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;  
+}
+
+h2 {
+    color: black
 }
 
 button {

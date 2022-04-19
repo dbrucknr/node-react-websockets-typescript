@@ -17,27 +17,23 @@ export const LoginForm = () => {
           <div id="image-container">
             <img src={image} alt="ts vs js" className="login" />
           </div>
+          <h2>Welcome back</h2>
+          <hr />
           <form onSubmit={login}>
-            <label>
-              Email:
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </label>
-            <label>
-              Password:
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </label>
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
             <button>Login</button>
           </form>
         </div>
