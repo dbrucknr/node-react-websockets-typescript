@@ -1,13 +1,17 @@
 import { FormEvent, useState } from "react";
 import "../../styles/login-form.css";
 import image from "../../assets/typescript-vs-javascript-comparison_.jpeg";
+import { AuthActions } from "../../state/actions/authActions";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = async (event: FormEvent<HTMLFormElement>) => {
+  const { login } = AuthActions();
+
+  const handleLoginEvent = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    await login({ email, password });
   };
 
   return (
@@ -19,7 +23,7 @@ export const LoginForm = () => {
           </div>
           <h2>Welcome back</h2>
           <hr />
-          <form onSubmit={login}>
+          <form onSubmit={handleLoginEvent}>
             <input
               type="text"
               name="email"

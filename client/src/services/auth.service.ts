@@ -1,6 +1,6 @@
 import { attemptServiceRequest } from "./attemptServiceRequest";
 
-interface ILoginCredentials {
+export interface ILoginCredentials {
   email: string;
   password: string;
 }
