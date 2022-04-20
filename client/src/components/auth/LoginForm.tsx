@@ -9,7 +9,7 @@ export const LoginForm = () => {
 
   const { login } = AuthActions();
 
-  const handleLoginEvent = async (event: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await login({ email, password });
   };
@@ -21,15 +21,17 @@ export const LoginForm = () => {
           <div id="image-container">
             <img src={image} alt="ts vs js" className="login" />
           </div>
-          <h2>Welcome back</h2>
+          <h2 className="login">Welcome back</h2>
           <hr />
-          <form onSubmit={handleLoginEvent}>
+          <form onSubmit={handleLogin}>
             <input
               type="text"
               name="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              required
+              autoComplete="on"
             />
             <input
               type="password"
@@ -37,6 +39,8 @@ export const LoginForm = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              required
+              autoComplete="on"
             />
             <button>Login</button>
           </form>

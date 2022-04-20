@@ -3,7 +3,7 @@ import { attemptServiceRequest } from "./attemptServiceRequest";
 const BASE_URL = "http://localhost:8000";
 const headers = {
   "Content-Type": "application/json",
-  credentials: "same-origin",
+  credentials: "include",
 };
 
 export const UserService = () => {
