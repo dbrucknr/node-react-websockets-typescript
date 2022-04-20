@@ -1,11 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./styles/App.css";
-import { Navigation } from "./components/base/nav";
-import { NoPageFound } from "./pages/pageNotFound";
-import { ProtectedPage } from "./components/base/protectedPage";
-import { Login } from "./pages/login";
-import { Messenger } from "./pages/messenger";
-import { Registration } from "./pages/registration";
+import { Navigation, ProtectedPage } from "./components/index";
+import { Login, Registration, Messenger, NoPageFound } from "./pages/index";
 
 export const App = () => {
   return (
