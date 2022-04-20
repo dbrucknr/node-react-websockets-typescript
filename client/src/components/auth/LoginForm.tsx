@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import "../../styles/login-form.css";
 import image from "../../assets/typescript-vs-javascript-comparison_.jpeg";
 import { AuthActions } from "../../state/actions/authActions";
+import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -44,6 +45,10 @@ export const LoginForm = () => {
             />
             <button>Login</button>
           </form>
+          <p className="login">Dont have an account?</p>
+          <Link to="/register" className="login">
+            Register
+          </Link>
         </div>
       </div>
     </>

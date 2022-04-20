@@ -41,5 +41,5 @@ export const AuthActions = () => {
     navigate("/login");
   };
 
-  return { login, register };
+  return { login, register, navigate };
 };

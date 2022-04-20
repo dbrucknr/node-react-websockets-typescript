@@ -18,8 +18,8 @@ form {
     flex-direction: column;  
 }
 
-h2.login {
-    color: black
+h2.login, p.login, a.login {
+    color: black;
 }
 
 button {
