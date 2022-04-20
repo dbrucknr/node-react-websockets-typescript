@@ -26,7 +26,7 @@ export const AuthActions = () => {
   const login = async (credentials: ILoginCredentials) => {
     const response = await loginService(credentials);
     if (response) {
-      await setUserData();
+      return await setUserData();
     }
     // Add Failure Dispatch
     navigate("/login");
@@ -35,11 +35,13 @@ export const AuthActions = () => {
   const setUserData = async () => {
     const response = await retrieveUserData();
     if (response) {
-      dispatch({ type: IAuthActions.LOGIN, payload: response.body });
+      console.log("setUserData", response.user);
+
+      dispatch({ type: IAuthActions.LOGIN, payload: response.user });
       return navigate("/");
     }
     navigate("/login");
   };
 
-  return { login, register, navigate };
+  return { login, register };
 };

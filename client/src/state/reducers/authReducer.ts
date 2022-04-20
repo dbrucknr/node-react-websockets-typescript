@@ -6,53 +6,62 @@ export enum IAuthActions {
 
 interface IAction {
   type: IAuthActions;
-  payload: any;
+  payload: User;
 }
 
-// interface User {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   threads: any[];
-//   threadParticipant: any[];
-// }
-
-// firstName: "",
-// lastName: "",
-// email: "",
-// threads: [],
-// threadParticipant: [],
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  threads: any[];
+  threadParticipant: any[];
+};
 
 interface IAuthState {
-  user: {}; // TODO - set this to a User type (model)
+  user: User; // TODO - set this to a User type (model)
   isLoggedIn: boolean;
 }
 
 const initialState = {
-  user: {},
+  user: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    threads: [],
+    threadParticipant: [],
+  },
   isLoggedIn: false,
 };
 
 const authActionMap = {
-  LOGIN: (state: IAuthState, payload: IAction) => ({
+  LOGIN: (state: IAuthState, payload: User) => ({
     ...state,
     user: payload,
     isLoggedIn: true,
   }),
   LOGOUT: (state: IAuthState) => ({
     ...state,
-    user: {},
+    user: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      threads: [],
+      threadParticipant: [],
+    },
     token: "",
     isLoggedIn: false,
   }),
-  REGISTER: (state: IAuthState, payload: IAction) => ({
+  REGISTER: (state: IAuthState, payload: User) => ({
     ...state,
     user: payload,
     isLoggedIn: true,
   }),
 };
 
-export const authReducer = (state = initialState, action: IAction) => {
+export const authReducer = (
+  state: IAuthState = initialState,
+  action: IAction
+) => {
   const { type, payload } = action;
   const handler = authActionMap[type];
   return handler ? handler(state, payload) : state;

@@ -6,20 +6,26 @@
 }
 
 #form-card {
-    width: 75%;
+    width: 65%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     padding: 10px;
     background-color: #faf9f8;
+
 }
 
 form {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column; 
+    align-items: center; 
 }
 
-h2.login, p.login, a.login {
+h2.login, p.login {
     color: black;
+}
+
+a.login {
+    color: #3178c6;
 }
 
 button {
@@ -29,7 +35,7 @@ button {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: 40%;
   }
   
 button:hover {
@@ -41,7 +47,7 @@ input[type=text], input[type=password] {
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    width: 100%;
+    width: 70%;
 }
 
 #image-container {
