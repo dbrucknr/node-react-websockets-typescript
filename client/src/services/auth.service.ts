@@ -5,7 +5,7 @@ export interface ILoginCredentials {
   password: string;
 }
 
-interface IRegistrationCredentials {
+export interface IRegistrationCredentials {
   firstName: string;
   lastName: string;
   email: string;
@@ -34,9 +34,11 @@ export const AuthService = () => {
       }
       return false;
     });
+
   const registrationService = async (credentials: IRegistrationCredentials) =>
     await attemptServiceRequest(async () => {
       const response = await fetch(`${BASE_URL}/register/user`, {
+        credentials: "include",
         method: "POST",
         headers,
         body: JSON.stringify(credentials),
@@ -44,9 +46,11 @@ export const AuthService = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        return data;
       }
+      return false;
     });
+
   const logoutService = async () =>
     // Test / Watch for removal of cookie assigned by server
     await attemptServiceRequest(async () => {

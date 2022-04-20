@@ -5,6 +5,7 @@ import { NoPageFound } from "./pages/pageNotFound";
 import { ProtectedPage } from "./components/base/protectedPage";
 import { Login } from "./pages/login";
 import { Messenger } from "./pages/messenger";
+import { Registration } from "./pages/registration";
 
 export const App = () => {
   return (
@@ -17,6 +18,7 @@ export const App = () => {
               <Route path="/" element={<Messenger />} />
             </Route>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
             <Route path="*" element={<NoPageFound />} />
           </Routes>
         </div>
