@@ -5,7 +5,6 @@ import { UserRepository } from "../database/repositories/repository";
 export const retrieveUserData = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { id } = req["user"];
-    console.log(id);
 
     const userData = await UserRepository.findOne({
       relations: {

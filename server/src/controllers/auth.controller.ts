@@ -45,7 +45,7 @@ export const login = async (req: Request, res: Response) =>
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .send({ message: "Login Logic", request: req.body });
+      .send({ message: "Success" });
   });
 
 export const logout = async (req: Request, res: Response) =>
