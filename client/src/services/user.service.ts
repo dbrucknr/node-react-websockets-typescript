@@ -14,6 +14,7 @@ export const UserService = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log("UserService - retrieveUserData", data);
         return data;
       }
       return false;

@@ -7,10 +7,14 @@ import {
   ILoginCredentials,
   IRegistrationCredentials,
 } from "../../services/auth.service";
+import { RootState } from "../store";
 
 export const AuthActions = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const authenticated = useSelector(
+    (state: RootState) => state.authReducer.isLoggedIn
+  );
 
   const { loginService, registrationService } = AuthService();
   const { retrieveUserData } = UserService();
@@ -38,10 +42,14 @@ export const AuthActions = () => {
       console.log("setUserData", response.user);
 
       dispatch({ type: IAuthActions.LOGIN, payload: response.user });
-      return navigate("/");
+      navigate("/");
+      return true;
+    } else {
+      navigate("/login");
+      return false;
     }
-    navigate("/login");
+    // return null;
   };
 
-  return { login, register };
+  return { login, register, setUserData, authenticated };
 };
