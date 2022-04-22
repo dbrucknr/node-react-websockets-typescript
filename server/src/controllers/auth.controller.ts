@@ -35,7 +35,7 @@ export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { email, password } = req.body;
     const user = await UserRepository.findOne({ where: { email: email } });
-    console.log(user);
+
     if (user) {
       const validatePassword = await bcryptjs.compare(password, user.password);
       const token = validatePassword && sign({ id: user.id }, "secret");

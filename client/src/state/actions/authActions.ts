@@ -37,6 +37,7 @@ export const AuthActions = () => {
   };
 
   const setUserData = async () => {
+    console.log("setUserData");
     const response = await retrieveUserData();
     if (response) {
       dispatch({ type: IAuthActions.LOGIN, payload: response.user });
@@ -46,7 +47,6 @@ export const AuthActions = () => {
       navigate("/login");
       return false;
     }
-    // return null;
   };
 
   return { login, register, setUserData, authenticated };
