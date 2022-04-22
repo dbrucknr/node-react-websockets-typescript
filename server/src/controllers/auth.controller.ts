@@ -35,17 +35,19 @@ export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { email, password } = req.body;
     const user = await UserRepository.findOne({ where: { email: email } });
-    const validatePassword = user
-      ? await bcryptjs.compare(password, user.password)
-      : res.status(400).send("Invalid Login Attempt");
-    const token = validatePassword && sign({ id: user.id }, "secret");
+    console.log(user);
+    if (user) {
+      const validatePassword = await bcryptjs.compare(password, user.password);
+      const token = validatePassword && sign({ id: user.id }, "secret");
+      return res
+        .cookie("jwt-messenger", token, {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
+        })
+        .send({ message: "Success" });
+    }
 
-    return res
-      .cookie("jwt-messenger", token, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      })
-      .send({ message: "Success" });
+    return res.status(400).send("Invalid Login Attempt");
   });
 
 export const logout = async (req: Request, res: Response) =>

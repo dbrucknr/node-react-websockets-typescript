@@ -1,10 +1,10 @@
 import { attemptServiceRequest } from "./attemptServiceRequest";
 
 const BASE_URL = "http://localhost:8000";
-const headers = {
-  "Content-Type": "application/json",
-  credentials: "include",
-};
+// const headers = {
+//   "Content-Type": "application/json",
+//   credentials: "include",
+// };
 
 export const UserService = () => {
   const retrieveUserData = async () =>

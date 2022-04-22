@@ -8,6 +8,7 @@ export const ProtectedPage = () => {
   const { setUserData, authenticated } = AuthActions();
   const [checkedAuthStatus, setCheckedAuthStatus] = useState(false);
 
+  const verifyAuthenticated = async () => {};
   // 1. On App load attempt to setUserData
   // 2. While awaiting a response - set some sort of loading state.
   // Need to stop flashing of login redirect until I know whether or not the
@@ -16,8 +17,8 @@ export const ProtectedPage = () => {
 
   useEffect(() => {
     (async () => {
-      const check = await setUserData();
-      if (check) setTimeout(() => setCheckedAuthStatus(true), 2000);
+      await setUserData();
+      setTimeout(() => setCheckedAuthStatus(true), 2000);
     })();
   }, []);
 
