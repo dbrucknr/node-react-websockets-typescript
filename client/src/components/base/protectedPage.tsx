@@ -18,11 +18,10 @@ export const ProtectedPage = () => {
     (async () => {
       await setUserData();
       setTimeout(() => setCheckedAuthStatus(true), 2000);
-      console.log("i fire once");
     })();
   }, []);
 
-  while (checkedAuthStatus !== true) {
+  if (checkedAuthStatus !== true) {
     return <div>Loading</div>;
   }
 

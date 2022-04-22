@@ -1,12 +1,12 @@
-import { AuthService } from "../../services/auth.service";
+import {
+  AuthService,
+  ILoginCredentials,
+  IRegistrationCredentials,
+} from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IAuthActions } from "../reducers/authReducer";
-import {
-  ILoginCredentials,
-  IRegistrationCredentials,
-} from "../../services/auth.service";
 import { RootState } from "../store";
 
 export const AuthActions = () => {
@@ -37,7 +37,6 @@ export const AuthActions = () => {
   };
 
   const setUserData = async () => {
-    console.log("setUserData");
     const response = await retrieveUserData();
     if (response) {
       dispatch({ type: IAuthActions.LOGIN, payload: response.user });

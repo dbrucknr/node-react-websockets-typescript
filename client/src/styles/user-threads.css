@@ -1,0 +1,4 @@
+#threads {
+    display: flex;
+    flex-direction: column;
+}
