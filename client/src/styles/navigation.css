@@ -6,6 +6,10 @@
     background-color: #3178c6;
 }
 
+#welcome-message {
+    color: white;
+}
+
 h2 {
     display: flex;
     align-self: center;
