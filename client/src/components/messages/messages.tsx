@@ -1,14 +1,14 @@
 import "../../styles/messages.css";
 import { ThreadActions } from "../../state/actions/threadActions";
 import { AuthActions } from "../../state/actions/authActions";
-import { Message } from "../../state/reducers/threadReducer";
+import { IMessage } from "../../state/types/state";
 import { MessageInput } from "./messageInput";
 
 export const Messages = () => {
   const { messages } = ThreadActions();
   const { self } = AuthActions();
 
-  const determineOwner = (message: Message) =>
+  const determineOwner = (message: IMessage) =>
     message.sender.id === self.id ? "owner" : "other";
 
   return (

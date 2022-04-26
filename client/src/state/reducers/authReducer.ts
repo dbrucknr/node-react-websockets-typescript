@@ -1,3 +1,5 @@
+import { IUser } from "../types/state";
+
 export enum IAuthActions {
   LOGIN = "LOGIN",
   REGISTER = "REGISTER",
@@ -6,20 +8,11 @@ export enum IAuthActions {
 
 interface IAction {
   type: IAuthActions;
-  payload: User;
+  payload: IUser;
 }
 
-type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  threads: any[];
-  threadParticipant: any[];
-};
-
 interface IAuthState {
-  user: User; // TODO - set this to a User type (model)
+  user: IUser; // TODO - set this to a User type (model)
   isLoggedIn: boolean;
 }
 
@@ -36,7 +29,7 @@ const initialState = {
 };
 
 const authActionMap = {
-  LOGIN: (state: IAuthState, payload: User) => ({
+  LOGIN: (state: IAuthState, payload: IUser) => ({
     ...state,
     user: payload,
     isLoggedIn: true,
@@ -54,7 +47,7 @@ const authActionMap = {
     token: "",
     isLoggedIn: false,
   }),
-  REGISTER: (state: IAuthState, payload: User) => ({
+  REGISTER: (state: IAuthState, payload: IUser) => ({
     ...state,
     user: payload,
     isLoggedIn: true,
