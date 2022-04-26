@@ -26,15 +26,15 @@ interface IThreadState {
   messages: Message[];
 }
 
+const initialState = {
+  messages: [],
+};
+
 const threadActionMap = {
   RETRIEVE: (state: IThreadState, payload: Message[]) => ({
     ...state,
     messages: payload,
   }),
-};
-
-const initialState = {
-  messages: [],
 };
 
 export const threadReducer = (

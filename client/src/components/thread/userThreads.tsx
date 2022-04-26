@@ -19,7 +19,7 @@ export const UserThreads = () => {
           <div key={thread.id} onClick={() => getMessages(thread.id)}>
             {thread.participants.map((participant: any) => {
               return participant.user.id !== self.id ? (
-                <div key={participant.id}>
+                <div key={participant.id} id="participant">
                   {participant.user.firstName} {participant.user.lastName}
                 </div>
               ) : null;

@@ -2,6 +2,7 @@ import "../../styles/messages.css";
 import { ThreadActions } from "../../state/actions/threadActions";
 import { AuthActions } from "../../state/actions/authActions";
 import { Message } from "../../state/reducers/threadReducer";
+import { MessageInput } from "./messageInput";
 
 export const Messages = () => {
   const { messages } = ThreadActions();
@@ -20,6 +21,7 @@ export const Messages = () => {
           </div>
         );
       })}
+      <MessageInput />
     </div>
   );
 };
