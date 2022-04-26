@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IAuthActions } from "../reducers/authReducer";
 import { RootState } from "../store";
+import { User } from "../../models/user";
 
 export const AuthActions = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ export const AuthActions = () => {
   const authenticated = useSelector(
     (state: RootState) => state.authReducer.isLoggedIn
   );
-  const self = useSelector((state: RootState) => state.authReducer.user);
+  const self = useSelector(
+    (state: RootState) => new User(state.authReducer.user)
+  );
 
   const { loginService, registrationService } = AuthService();
   const { retrieveUserData } = UserService();
@@ -40,7 +43,7 @@ export const AuthActions = () => {
   const setUserData = async () => {
     const response = await retrieveUserData();
     if (response) {
-      dispatch({ type: IAuthActions.LOGIN, payload: response.user });
+      dispatch({ type: IAuthActions.LOGIN, payload: response });
       navigate("/");
       return true;
     } else {

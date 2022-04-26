@@ -1,7 +1,7 @@
 import "../../styles/messages.css";
 import { ThreadActions } from "../../state/actions/threadActions";
 import { AuthActions } from "../../state/actions/authActions";
-import { IMessage } from "../../state/types/state";
+import { IMessage } from "../../models/message";
 import { MessageInput } from "./messageInput";
 
 export const Messages = () => {

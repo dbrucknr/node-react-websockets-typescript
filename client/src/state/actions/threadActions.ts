@@ -11,7 +11,7 @@ export const ThreadActions = () => {
 
   const { retrieveThreadMessages } = ThreadService();
 
-  const getMessages = async (id: IThreadMessages) => {
+  const getMessages = async (id: number) => {
     const service = await retrieveThreadMessages(id);
     console.log("getMessages", service);
     if (service) {

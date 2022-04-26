@@ -13,9 +13,8 @@ export const UserService = () => {
         credentials: "include",
       });
       if (response.ok) {
-        const data = await response.json();
-        console.log("UserService - retrieveUserData", data);
-        return data;
+        const { user } = await response.json();
+        return user;
       }
       return false;
     });

@@ -1,4 +1,4 @@
-import { IUser, IMessage, IParticipant, IThread } from "../types/state";
+import { IMessage } from "../../models/message";
 
 export enum IThreadActions {
   RETRIEVE = "RETRIEVE",

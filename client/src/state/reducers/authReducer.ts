@@ -1,4 +1,4 @@
-import { IUser } from "../types/state";
+import { emptyUser, IUser, User } from "../../models/user";
 
 export enum IAuthActions {
   LOGIN = "LOGIN",
@@ -17,39 +17,23 @@ interface IAuthState {
 }
 
 const initialState = {
-  user: {
-    id: 0,
-    firstName: "",
-    lastName: "",
-    email: "",
-    threads: [],
-    threadParticipant: [],
-  },
+  user: emptyUser(),
   isLoggedIn: false,
 };
 
 const authActionMap = {
-  LOGIN: (state: IAuthState, payload: IUser) => ({
-    ...state,
-    user: payload,
-    isLoggedIn: true,
-  }),
+  LOGIN: (state: IAuthState, payload: IUser) => {
+    return { ...state, user: payload, isLoggedIn: true };
+  },
   LOGOUT: (state: IAuthState) => ({
     ...state,
-    user: {
-      id: 0,
-      firstName: "",
-      lastName: "",
-      email: "",
-      threads: [],
-      threadParticipant: [],
-    },
+    user: emptyUser(),
     token: "",
     isLoggedIn: false,
   }),
   REGISTER: (state: IAuthState, payload: IUser) => ({
     ...state,
-    user: payload,
+    user: new User(payload),
     isLoggedIn: true,
   }),
 };
