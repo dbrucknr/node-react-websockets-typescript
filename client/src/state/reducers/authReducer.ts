@@ -10,6 +10,7 @@ interface IAction {
 }
 
 type User = {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -24,6 +25,7 @@ interface IAuthState {
 
 const initialState = {
   user: {
+    id: 0,
     firstName: "",
     lastName: "",
     email: "",
@@ -42,6 +44,7 @@ const authActionMap = {
   LOGOUT: (state: IAuthState) => ({
     ...state,
     user: {
+      id: 0,
       firstName: "",
       lastName: "",
       email: "",

@@ -1,20 +1,22 @@
 import "../../styles/messages.css";
 import { ThreadActions } from "../../state/actions/threadActions";
-import { useSelector } from "react-redux";
-import { RootState } from "../../state/store";
+import { AuthActions } from "../../state/actions/authActions";
 import { Message } from "../../state/reducers/threadReducer";
 
 export const Messages = () => {
   const { messages } = ThreadActions();
-  console.log("Messages", messages);
+  const { self } = AuthActions();
+
+  const determineOwner = (message: Message) =>
+    message.sender.id === self.id ? "owner" : "other";
+
   return (
     <div id="messages">
       <h1>Messages</h1>
-      {messages.map((message: Message) => {
+      {messages.map((message) => {
         return (
-          <div key={message.id}>
-            {message.type}
-            {message.content}
+          <div key={message.id} className={determineOwner(message)}>
+            {message.sender.firstName}:{message.content}
           </div>
         );
       })}

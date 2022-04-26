@@ -15,6 +15,7 @@ export const AuthActions = () => {
   const authenticated = useSelector(
     (state: RootState) => state.authReducer.isLoggedIn
   );
+  const self = useSelector((state: RootState) => state.authReducer.user);
 
   const { loginService, registrationService } = AuthService();
   const { retrieveUserData } = UserService();
@@ -48,5 +49,5 @@ export const AuthActions = () => {
     }
   };
 
-  return { login, register, setUserData, authenticated };
+  return { login, register, setUserData, authenticated, self };
 };

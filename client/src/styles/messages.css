@@ -1,6 +1,17 @@
 #messages {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     flex-grow: 2;
+}
+
+.owner {
+    background-color: rgb(45, 118, 186);
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.other {
+    background-color: green;
+    text-align: left;
 }
