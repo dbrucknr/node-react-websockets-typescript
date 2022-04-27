@@ -1,10 +1,12 @@
 import "../../styles/message-input.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { AuthActions } from "../../state/actions/authActions";
+import { ThreadActions } from "../../state/actions/threadActions";
 
 export const MessageInput = () => {
   const [message, setMessage] = useState("");
   const { self } = AuthActions();
+  const { selectedThread } = ThreadActions();
 
   const handleMessage = (event: ChangeEvent<HTMLInputElement>) =>
     setMessage(event.target.value);
@@ -13,7 +15,7 @@ export const MessageInput = () => {
     type: "standard", // This will be default for now until images are completed
     content: message,
     sender: self,
-    thread: 0, // Need to set an active thread - pass here either by prop or in redux
+    thread: selectedThread, // Need to set an active thread - pass here either by prop or in redux
   };
 
   const handleSend = (event: MouseEvent<HTMLButtonElement>) => {

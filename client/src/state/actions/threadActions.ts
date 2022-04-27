@@ -1,12 +1,16 @@
-import { ThreadService, IThreadMessages } from "../../services/thread.service";
+import { ThreadService } from "../../services/thread.service";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { IThreadActions } from "../reducers/threadReducer";
+import { IThread, Thread } from "../../models/thread";
 
 export const ThreadActions = () => {
   const dispatch = useDispatch();
   const messages = useSelector(
     (state: RootState) => state.threadReducer.messages
+  );
+  const selectedThread = useSelector(
+    (state: RootState) => new Thread(state.threadReducer.selectedThread)
   );
 
   const { retrieveThreadMessages } = ThreadService();
@@ -20,5 +24,8 @@ export const ThreadActions = () => {
     }
   };
 
-  return { getMessages, messages };
+  const setActiveThread = (thread: IThread) =>
+    dispatch({ type: IThreadActions.SELECT_THREAD, payload: thread });
+
+  return { getMessages, setActiveThread, messages, selectedThread };
 };

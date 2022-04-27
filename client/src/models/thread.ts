@@ -38,6 +38,10 @@ export class Thread {
   participants: IParticipant[] = [];
   messages: IMessage[] = [];
 
+  constructor(props: IThread) {
+    Object.assign(this, props);
+  }
+
   get participantCount() {
     return this.participants.length;
   }
