@@ -17,8 +17,12 @@ export const MessageInput = () => {
   };
 
   const handleSend = (event: MouseEvent<HTMLButtonElement>) => {
+    if (!message.length) {
+      return;
+    }
     // Send Message with Socket
     console.log(template);
+    setMessage("");
   };
 
   return (
@@ -28,8 +32,13 @@ export const MessageInput = () => {
           type="text"
           placeholder="TS-Messenger.io"
           onChange={(e) => handleMessage(e)}
+          value={message || ""}
         />
-        <button id="input-submission" onClick={(e) => handleSend(e)}>
+        <button
+          id="input-submission"
+          onClick={(e) => handleSend(e)}
+          disabled={message.length < 1 ? true : false}
+        >
           Send
         </button>
       </div>

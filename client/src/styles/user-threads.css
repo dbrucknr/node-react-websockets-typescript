@@ -12,3 +12,8 @@
     padding: 10px;
     cursor: pointer;
 }
+
+#thread-count-summary {
+    color: black;
+    margin-bottom: 10px;
+}

@@ -10,3 +10,8 @@
     width: 25%;
     margin-left: 2%;
 }
+
+button:disabled {
+    cursor: not-allowed;
+    background-color: #cccccc;
+}
