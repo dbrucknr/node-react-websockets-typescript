@@ -6,7 +6,7 @@ export interface IParticipant {
   user: IUser;
 }
 
-export const emptyParticipant = () => {
+export const emptyParticipant = (): IParticipant => {
   return {
     id: 0,
     thread: emptyThread(),
@@ -21,7 +21,7 @@ export interface IThread {
   messages: IMessage[];
 }
 
-export const emptyThread = () => {
+export const emptyThread = (): IThread => {
   return {
     id: 0,
     type: "",
@@ -37,4 +37,12 @@ export class Thread {
   users: IUser[] = [];
   participants: IParticipant[] = [];
   messages: IMessage[] = [];
+
+  get participantCount() {
+    return this.participants.length;
+  }
+
+  get messageCount() {
+    return this.messages.length;
+  }
 }

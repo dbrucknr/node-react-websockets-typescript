@@ -1,5 +1,5 @@
 import "../../styles/message-input.css";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { AuthActions } from "../../state/actions/authActions";
 
 export const MessageInput = () => {
@@ -10,10 +10,15 @@ export const MessageInput = () => {
     setMessage(event.target.value);
 
   const template = {
-    type: "standard",
+    type: "standard", // This will be default for now until images are completed
     content: message,
     sender: self,
     thread: 0, // Need to set an active thread - pass here either by prop or in redux
+  };
+
+  const handleSend = (event: MouseEvent<HTMLButtonElement>) => {
+    // Send Message with Socket
+    console.log(template);
   };
 
   return (
@@ -24,6 +29,9 @@ export const MessageInput = () => {
           placeholder="TS-Messenger.io"
           onChange={(e) => handleMessage(e)}
         />
+        <button id="input-submission" onClick={(e) => handleSend(e)}>
+          Send
+        </button>
       </div>
     </div>
   );

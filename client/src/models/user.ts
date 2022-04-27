@@ -9,7 +9,7 @@ export interface IUser {
   threadParticipant: IParticipant[];
 }
 
-export const emptyUser = () => {
+export const emptyUser = (): IUser => {
   return {
     id: 0,
     firstName: "",
@@ -29,10 +29,13 @@ export class User {
 
   constructor(props: IUser) {
     Object.assign(this, props);
-    // this.threadParticipant = threadParticipant;
   }
 
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
+  }
+
+  get threadCount() {
+    return this.threads.length;
   }
 }
