@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { routes } from "../routes/routes";
 import cookieParser from "cookie-parser";
+import { SocketServer } from "../socket/socket";
+import http from "http";
 
 export const startApplication = () => {
   try {
@@ -19,7 +21,11 @@ export const startApplication = () => {
     // Routes
     routes(app);
 
-    app.listen(8000, () => {
+    // Socket.io
+    const server = http.createServer(app);
+    SocketServer(server);
+
+    server.listen(8000, () => {
       console.log("API Active and listening to Port 8000");
     });
   } catch (error) {
