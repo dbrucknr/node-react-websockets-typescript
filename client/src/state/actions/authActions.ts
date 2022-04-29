@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { IAuthActions } from "../reducers/authReducer";
 import { RootState } from "../store";
 import { User } from "../../models/user";
+import { IThreadActions } from "../reducers/threadReducer";
 
 export const AuthActions = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,13 @@ export const AuthActions = () => {
     const response = await retrieveUserData();
     if (response) {
       dispatch({ type: IAuthActions.LOGIN, payload: response });
+
+      // This may imply a data structuring adjustment - there are now
+      // two copies of threads - one nested in the user object and
+      // one more in the thread state
+      const { threads } = response;
+      dispatch({ type: IThreadActions.SET_THREADS, payload: threads });
+
       navigate("/");
       return true;
     } else {

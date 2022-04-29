@@ -1,4 +1,5 @@
 import { io, Socket } from "socket.io-client";
+import { IUser } from "./user";
 
 interface ServerToClientEvents {
   noArg: () => void;
@@ -7,7 +8,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-  join: () => void;
+  join: (user: IUser) => void;
 }
 
 let instance: Websocket;

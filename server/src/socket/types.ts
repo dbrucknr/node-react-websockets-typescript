@@ -1,3 +1,5 @@
+import { User } from "../database/entities/user.entity";
+
 export interface ServerToClientEvents {
   noArg: () => void;
   basicEmit: (a: number, b: string, c: Buffer) => void;
@@ -6,7 +8,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   hello: () => void;
-  join: () => void;
+  join: (user: User) => void;
 }
 
 export interface InterServerEvents {

@@ -2,7 +2,7 @@ import { ThreadService } from "../../services/thread.service";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { IThreadActions } from "../reducers/threadReducer";
-import { IThread, Thread } from "../../models/thread";
+import { IParticipant, IThread, Thread } from "../../models/thread";
 
 export const ThreadActions = () => {
   const dispatch = useDispatch();
@@ -13,13 +13,14 @@ export const ThreadActions = () => {
     (state: RootState) => new Thread(state.threadReducer.selectedThread)
   );
 
+  const TEST = useSelector((state: RootState) => state.threadReducer.threads);
+
   const { retrieveThreadMessages } = ThreadService();
 
   const getMessages = async (id: number) => {
     const service = await retrieveThreadMessages(id);
-    console.log("getMessages", service);
     if (service) {
-      dispatch({ type: IThreadActions.RETRIEVE, payload: service });
+      dispatch({ type: IThreadActions.RETRIEVE_MESSAGES, payload: service });
       return;
     }
   };
@@ -27,5 +28,15 @@ export const ThreadActions = () => {
   const setActiveThread = (thread: IThread) =>
     dispatch({ type: IThreadActions.SELECT_THREAD, payload: thread });
 
-  return { getMessages, setActiveThread, messages, selectedThread };
+  const setParticipantOnline = (participant: IParticipant) =>
+    dispatch({ type: IThreadActions, payload: participant });
+
+  return {
+    getMessages,
+    setActiveThread,
+    setParticipantOnline,
+    messages,
+    selectedThread,
+    TEST,
+  };
 };
