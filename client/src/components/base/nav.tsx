@@ -3,6 +3,7 @@ import "../../styles/navigation.css";
 import logo from "../../assets/typescript-logo.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
+import { StatusOptions } from "../../state/utilities/actionMapper";
 
 export const Navigation = () => {
   const user = useSelector((state: RootState) => state.authReducer.user);
@@ -20,7 +21,9 @@ export const Navigation = () => {
       </div>
       <div id="selections">
         {authStatus ? (
-          <div id="welcome-message">Welcome {user.firstName}</div>
+          <div id="welcome-message">
+            Welcome {user.firstName} {user.status}
+          </div>
         ) : (
           <div>
             <p>

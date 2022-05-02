@@ -12,7 +12,9 @@ const BASE_URL = "http://localhost:8000";
 export const ThreadService = () => {
   const retrieveThreadMessages = async (id: number) =>
     await attemptServiceRequest(async () => {
-      const response = await fetch(`${BASE_URL}/thread/messages/${id}`);
+      const response = await fetch(`${BASE_URL}/thread/messages/${id}`, {
+        credentials: "include",
+      });
 
       if (response.ok) {
         const messages = await response.json();

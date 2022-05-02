@@ -1,9 +1,11 @@
 import { IUser, emptyUser } from "./user";
 import { IMessage } from "./message";
+import { StatusOptions } from "../state/utilities/actionMapper";
 export interface IParticipant {
   id: number;
   thread: IThread;
   user: IUser;
+  status: StatusOptions;
 }
 
 export const emptyParticipant = (): IParticipant => {
@@ -11,6 +13,7 @@ export const emptyParticipant = (): IParticipant => {
     id: 0,
     thread: emptyThread(),
     user: emptyUser(),
+    status: StatusOptions.OFFLINE,
   };
 };
 export interface IThread {

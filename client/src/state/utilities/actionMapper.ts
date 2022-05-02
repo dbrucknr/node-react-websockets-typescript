@@ -9,6 +9,7 @@ export enum StatusOptions {
 
 export const actionMapper = () => {
   const getOnlineUsers = (state: IThreadState, payload: number[]) => {
+    console.log("TEST2 - inside getOnlineUsers", payload);
     // Payload will be an array of ID's
     const threads = state.threads.map((thread) => {
       return {
@@ -17,7 +18,7 @@ export const actionMapper = () => {
           if (payload.includes(participant.user.id)) {
             return {
               ...participant,
-              status: "online",
+              status: StatusOptions.ONLINE,
             };
           }
           return participant;
@@ -32,22 +33,25 @@ export const actionMapper = () => {
 
   const setUserStatus = (
     state: IThreadState,
-    payload: IParticipant,
+    payload: IUser,
     status: StatusOptions
   ) => {
+    console.log("TEST - inside setUserStatus", payload);
+
     let selectedThreadCopy = { ...state.selectedThread };
     const threadsCopy = state.threads.map((thread) => {
-      let { participants } = thread;
-
-      participants.map((person) => {
-        if (person.id === payload.id) {
+      // This is not applying the status property to the embedded user
+      const participants = thread.participants.map((participant) => {
+        if (participant.user.id === payload.id) {
           return {
-            ...person,
-            status: status,
+            ...participant,
+            status: StatusOptions.ONLINE,
           };
         }
-        return person;
+        console.log(participant.user);
+        return participant;
       });
+      console.log("checking participants in setUserStatus", participants);
 
       if (thread.id === selectedThreadCopy.id) {
         selectedThreadCopy = {
@@ -60,6 +64,8 @@ export const actionMapper = () => {
         participants,
       };
     });
+
+    console.log("Do status updates make it to threadsCopy", threadsCopy);
     return {
       ...state,
       threads: threadsCopy,

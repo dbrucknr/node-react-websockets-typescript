@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../models/socket";
+import { IUser } from "../models/user";
 import { RootState } from "../state/store";
+import { IThreadActions } from "../state/reducers/threadReducer";
 
 export const useWebSocket = () => {
   const dispatch = useDispatch();
@@ -19,9 +21,20 @@ export const useWebSocket = () => {
           console.log("Server issued basicEmit event", args);
         });
 
-        connection.on("online", () => {});
+        connection.on("online", (user: IUser) => {
+          console.log("Server issued an online event", user);
+          dispatch({
+            type: IThreadActions.SET_PARTICIPANT_ONLINE,
+            payload: user,
+          });
+        });
 
-        connection.on("participants", () => {});
+        connection.on("participantsOnline", (participantIds: number[]) => {
+          dispatch({
+            type: IThreadActions.PARTICIPANTS_ONLINE,
+            payload: participantIds,
+          });
+        });
       } catch (error) {
         console.error(error);
       }

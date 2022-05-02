@@ -1,14 +1,18 @@
 import { IMessage } from "../../models/message";
 import { emptyThread, IThread } from "../../models/thread";
+import { IUser } from "../../models/user";
+import { actionMapper } from "../utilities/actionMapper";
+import { StatusOptions } from "../utilities/actionMapper";
 
 export enum IThreadActions {
   RETRIEVE_MESSAGES = "RETRIEVE_MESSAGES",
   SELECT_THREAD = "SELECT_THREAD",
   SET_THREADS = "SET_THREADS",
   SET_PARTICIPANT_ONLINE = "SET_PARTICIPANT_ONLINE",
+  PARTICIPANTS_ONLINE = "PARTICIPANTS_ONLINE",
 }
 
-type Payload = IMessage[] & IThread & IThread[];
+type Payload = IMessage[] & IThread & IThread[] & IUser & number[];
 
 interface IAction {
   type: IThreadActions;
@@ -27,6 +31,8 @@ const initialState = {
   threads: [],
 };
 
+const { setUserStatus, getOnlineUsers } = actionMapper();
+
 const threadActionMap = {
   RETRIEVE_MESSAGES: (state: IThreadState, payload: IMessage[]) => ({
     ...state,
@@ -40,9 +46,11 @@ const threadActionMap = {
     ...state,
     threads: payload,
   }),
-  SET_PARTICIPANT_ONLINE: (state: IThreadState, payload: IThread) => ({
-    ...state,
-    // selectedThread: payload,
+  SET_PARTICIPANT_ONLINE: (state: IThreadState, payload: IUser) => ({
+    ...setUserStatus(state, payload, StatusOptions.ONLINE),
+  }),
+  PARTICIPANTS_ONLINE: (state: IThreadState, payload: number[]) => ({
+    ...getOnlineUsers(state, payload),
   }),
 };
 

@@ -19,6 +19,7 @@ export const initializeDatabaseConnection = async (
   try {
     const connection = await database.initialize();
     if (connection) {
+      console.log("Database connection established");
       fn(...args);
     }
   } catch (error) {

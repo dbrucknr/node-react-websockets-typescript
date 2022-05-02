@@ -1,4 +1,5 @@
 import { IParticipant, IThread } from "./thread";
+import { StatusOptions } from "../state/utilities/actionMapper";
 
 export interface IUser {
   id: number;
@@ -7,6 +8,7 @@ export interface IUser {
   email: string;
   threads: IThread[];
   threadParticipant: IParticipant[];
+  status: StatusOptions;
 }
 
 export const emptyUser = (): IUser => {
@@ -17,6 +19,7 @@ export const emptyUser = (): IUser => {
     email: "",
     threads: [],
     threadParticipant: [],
+    status: StatusOptions.OFFLINE,
   };
 };
 export class User {
@@ -26,6 +29,7 @@ export class User {
   email: string = "";
   threads: IThread[] = [];
   threadParticipant: IParticipant[] = [];
+  status: StatusOptions = StatusOptions.OFFLINE;
 
   constructor(props: IUser) {
     Object.assign(this, props);

@@ -27,6 +27,7 @@ export const SocketServer = (server: http.Server) => {
   io.on("connection", (socket) => {
     console.log("Connected");
     socket.emit("noArg"); // TODO: create an emit for alerting client of connect success
+
     const { handleJoin, handleDisconnect } = SocketEventHandler(socket, io);
 
     socket.on("join", async (user: User) => handleJoin(user));

@@ -2,7 +2,8 @@ import { ThreadService } from "../../services/thread.service";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { IThreadActions } from "../reducers/threadReducer";
-import { IParticipant, IThread, Thread } from "../../models/thread";
+import { IThread, Thread } from "../../models/thread";
+import { IUser } from "../../models/user";
 
 export const ThreadActions = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,9 @@ export const ThreadActions = () => {
     (state: RootState) => new Thread(state.threadReducer.selectedThread)
   );
 
-  const TEST = useSelector((state: RootState) => state.threadReducer.threads);
+  const threads = useSelector(
+    (state: RootState) => state.threadReducer.threads
+  );
 
   const { retrieveThreadMessages } = ThreadService();
 
@@ -28,15 +31,20 @@ export const ThreadActions = () => {
   const setActiveThread = (thread: IThread) =>
     dispatch({ type: IThreadActions.SELECT_THREAD, payload: thread });
 
-  const setParticipantOnline = (participant: IParticipant) =>
-    dispatch({ type: IThreadActions, payload: participant });
+  const setParticipantOnline = (user: IUser) =>
+    dispatch({ type: IThreadActions, payload: user });
+
+  const seeOnlineParticipants = (participantsIds: number[]) => {
+    dispatch({ type: IThreadActions });
+  };
 
   return {
     getMessages,
     setActiveThread,
     setParticipantOnline,
+    seeOnlineParticipants,
     messages,
     selectedThread,
-    TEST,
+    threads,
   };
 };

@@ -1,6 +1,6 @@
 import { Message } from "../database/entities/message.entity";
 import { User } from "../database/entities/user.entity";
-import { Socket } from "socket.io";
+import { Socket, Server } from "socket.io";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -9,6 +9,16 @@ import {
 } from "./types";
 import { ParticipantRepository } from "../database/repositories/repository";
 
+type socketIO = Server<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+>;
+
+const usersOnline = new Map();
+const userSockets = new Map();
+
 export const SocketEventHandler = (
   socket: Socket<
     ClientToServerEvents,
@@ -16,14 +26,14 @@ export const SocketEventHandler = (
     InterServerEvents,
     SocketData
   >,
-  io
+  io: socketIO
 ) => {
-  const usersOnline = new Map();
-  const userSockets = new Map();
+  // const usersOnline = new Map();
+  // const userSockets = new Map();
 
   const handleJoin = async (user: User) => {
     console.log("join event detected");
-    const onlineParticipants = [];
+    const onlineParticipantsIds: number[] = [];
     let sockets = [];
 
     const setIncomingUserOnline = () => {
@@ -43,43 +53,53 @@ export const SocketEventHandler = (
     // Check joining User status:
     if (usersOnline.has(user.id)) {
       // Update existing user's socket
+      console.log("User already online");
+
       updateExistingUserSockets();
     } else {
       // Set User Online
+      console.log("Setting user online");
+
       setIncomingUserOnline();
     }
 
-    // TODO: This area of logic is not type-safe
+    console.log("usersOnline", usersOnline);
+
+    // TODO: This block of logic is not type-safe
     // Find all users that are participants in joining user's thread(s)
     const participants = await findParticipants(user);
+    console.log("participants", participants);
 
     // Notify other thread participants a thread member has come online:
     for (let i = 0; i < participants.length; i++) {
       if (usersOnline.has(participants[i])) {
+        console.log("usersOnline has participant");
+
         const participant = usersOnline.get(participants[i]);
 
         participant.sockets.forEach((socket) => {
           try {
+            console.log("Emitting online event to specific socket", user);
             io.to(socket).emit("online", user);
           } catch (error) {
             console.error("Error notifying friends user came online", error);
           }
-          onlineParticipants.push(participant.id);
-        });
-
-        // Send to user sockets which friends are online
-        sockets.forEach((socket) => {
-          try {
-            io.to(socket).emit("participants", onlineParticipants);
-          } catch (error) {
-            console.error(
-              "Error notifying user which participants are online",
-              error
-            );
-          }
+          onlineParticipantsIds.push(participant.id);
         });
       }
     }
+    // Send to user sockets which friends are online
+    // TODO: This block of logic is not type-safe
+    sockets.forEach((socket) => {
+      try {
+        io.to(socket).emit("participantsOnline", onlineParticipantsIds);
+      } catch (error) {
+        console.error(
+          "Error notifying user which participants are online",
+          error
+        );
+      }
+    });
   };
 
   const handleDisconnect = async () => {

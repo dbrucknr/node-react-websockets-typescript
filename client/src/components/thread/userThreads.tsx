@@ -5,7 +5,7 @@ import { ParticipantCard } from "../participants/participantCard";
 import { IThread } from "../../models/thread";
 
 export const UserThreads = () => {
-  const { getMessages, setActiveThread } = ThreadActions();
+  const { getMessages, setActiveThread, threads } = ThreadActions();
   const { self } = AuthActions();
 
   const handleClick = (thread: IThread) => {
@@ -20,17 +20,18 @@ export const UserThreads = () => {
         You have {self.threadCount}{" "}
         {self.threadCount > 1 ? "conversations" : "conversation"}
       </p>
-      {self.threads.map((thread) => {
+      {threads.map((thread) => {
         return (
           <div key={thread.id} onClick={() => handleClick(thread)}>
-            {thread.participants.map((participant) =>
-              participant.user.id !== self.id ? (
+            {thread.participants.map((participant) => {
+              <h1>{participant.status}</h1>;
+              return participant.user.id !== self.id ? (
                 <ParticipantCard
                   key={participant.id}
                   participant={participant}
                 />
-              ) : null
-            )}
+              ) : null;
+            })}
           </div>
         );
       })}
