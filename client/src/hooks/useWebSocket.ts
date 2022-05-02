@@ -18,6 +18,10 @@ export const useWebSocket = () => {
         connection.on("basicEmit", (args) => {
           console.log("Server issued basicEmit event", args);
         });
+
+        connection.on("online", () => {});
+
+        connection.on("participants", () => {});
       } catch (error) {
         console.error(error);
       }

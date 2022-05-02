@@ -9,5 +9,9 @@ const prefix = "thread";
 
 export const threadRoutes = (router: Router) => {
   router.get(`/${prefix}s/`, [isAuthenticated], retrieveUsersThreads);
-  router.get(`/${prefix}/messages/:id`, retrieveThreadMessages);
+  router.get(
+    `/${prefix}/messages/:id`,
+    [isAuthenticated],
+    retrieveThreadMessages
+  );
 };
