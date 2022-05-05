@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import { ThreadRepository } from "../database/repositories/repository";
-import { findThreadMessages, findThreads } from "../services/thread.service";
+import {
+  findSpecificThread,
+  findThreadMessages,
+  findThreads,
+} from "../services/thread.service";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -34,6 +38,13 @@ export const retrieveThreadMessages = async (req: Request, res: Response) =>
     return res.json({
       threadMessages,
     });
+  });
+
+export const retrieveSpecificThread = async (req: Request, res: Response) =>
+  await attemptRequest(req, res, async () => {
+    const { id } = req.params;
+    const thread = await findSpecificThread(parseInt(id));
+    return res.json({ thread });
   });
 
 export const updateThread = async (req: Request, res: Response) =>

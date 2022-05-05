@@ -1,6 +1,7 @@
 import { UserRepository } from "../database/repositories/repository";
 import { attemptQuery } from "../utilities/attemptQuery";
 import bcryptjs from "bcryptjs";
+import { User } from "../database/entities/user.entity";
 
 interface IRegistrationCredentials {
   firstName: string;
@@ -10,11 +11,9 @@ interface IRegistrationCredentials {
   passwordConfirm: string;
 }
 
-export const findUser = async (email: string) =>
+export const verifyUser = async (email: string) =>
   await attemptQuery(async () => {
-    return await UserRepository.findOne({
-      where: { email },
-    });
+    return await UserRepository.findOne({ where: { email: email } });
   });
 
 export const registerUser = async (credentials: IRegistrationCredentials) =>

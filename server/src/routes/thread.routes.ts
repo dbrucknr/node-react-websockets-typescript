@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   retrieveUsersThreads,
   retrieveThreadMessages,
+  retrieveSpecificThread,
 } from "../controllers/thread.controller";
 import { isAuthenticated } from "../middleware/auth.middleware";
 
@@ -14,4 +15,5 @@ export const threadRoutes = (router: Router) => {
     [isAuthenticated],
     retrieveThreadMessages
   );
+  router.get(`/${prefix}/:id`, [isAuthenticated], retrieveSpecificThread);
 };

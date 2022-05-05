@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import bcryptjs from "bcryptjs";
 import { sign } from "jsonwebtoken";
-import { findUser } from "../services/user.service";
-import { registerUser } from "../services/auth.service";
+import { verifyUser, registerUser } from "../services/auth.service";
 
 export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -14,7 +13,7 @@ export const register = async (req: Request, res: Response) =>
         message: "Password Confirmation did not match Password",
       });
     }
-    const existingUser = await findUser(email);
+    const existingUser = await verifyUser(email);
 
     if (existingUser) {
       return res.status(401).send({
@@ -35,7 +34,7 @@ export const register = async (req: Request, res: Response) =>
 export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { email, password } = req.body;
-    const user = await findUser(email);
+    const user = await verifyUser(email);
 
     if (user) {
       const validatePassword = await bcryptjs.compare(password, user.password);

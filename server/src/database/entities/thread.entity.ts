@@ -17,6 +17,7 @@ export class Thread {
   @Column()
   type: string;
 
+  // I'm wondering if this field is necessary - can probably remove. Check user model for relationship "threadParticipant"
   @ManyToMany(() => User, (user) => user.threadParticipant)
   users: User[];
 

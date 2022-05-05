@@ -9,7 +9,6 @@ export default (validator: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const validParams = await handler[validator].validateAsync(req.body);
-      console.log(validParams);
       next();
     } catch (error) {
       console.error(error);
