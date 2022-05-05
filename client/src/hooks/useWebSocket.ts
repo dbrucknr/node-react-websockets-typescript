@@ -14,15 +14,16 @@ export const useWebSocket = () => {
       try {
         const connection = socket.getSocket();
         connection.emit("join", currentUser);
+
         connection.on("noArg", () => {
           console.log("Server issued noArg event");
         });
+
         connection.on("basicEmit", (args) => {
           console.log("Server issued basicEmit event", args);
         });
 
         connection.on("online", (user: IUser) => {
-          console.log("Server issued an online event", user);
           dispatch({
             type: IThreadActions.SET_PARTICIPANT_ONLINE,
             payload: user,

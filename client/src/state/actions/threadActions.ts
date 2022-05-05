@@ -32,10 +32,13 @@ export const ThreadActions = () => {
     dispatch({ type: IThreadActions.SELECT_THREAD, payload: thread });
 
   const setParticipantOnline = (user: IUser) =>
-    dispatch({ type: IThreadActions, payload: user });
+    dispatch({ type: IThreadActions.SET_PARTICIPANT_ONLINE, payload: user });
 
   const seeOnlineParticipants = (participantsIds: number[]) => {
-    dispatch({ type: IThreadActions });
+    dispatch({
+      type: IThreadActions.PARTICIPANTS_ONLINE,
+      payload: participantsIds,
+    });
   };
 
   return {

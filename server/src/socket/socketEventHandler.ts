@@ -52,34 +52,22 @@ export const SocketEventHandler = (
 
     // Check joining User status:
     if (usersOnline.has(user.id)) {
-      // Update existing user's socket
-      console.log("User already online");
-
       updateExistingUserSockets();
     } else {
-      // Set User Online
-      console.log("Setting user online");
-
       setIncomingUserOnline();
     }
-
-    console.log("usersOnline", usersOnline);
 
     // TODO: This block of logic is not type-safe
     // Find all users that are participants in joining user's thread(s)
     const participants = await findParticipants(user);
-    console.log("participants", participants);
 
     // Notify other thread participants a thread member has come online:
     for (let i = 0; i < participants.length; i++) {
       if (usersOnline.has(participants[i])) {
-        console.log("usersOnline has participant");
-
         const participant = usersOnline.get(participants[i]);
 
         participant.sockets.forEach((socket) => {
           try {
-            console.log("Emitting online event to specific socket", user);
             io.to(socket).emit("online", user);
           } catch (error) {
             console.error("Error notifying friends user came online", error);
