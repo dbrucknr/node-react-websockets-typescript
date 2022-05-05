@@ -1,15 +1,20 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
-import { UserRepository } from "../database/repositories/repository";
 import bcryptjs from "bcryptjs";
 import { sign } from "jsonwebtoken";
+import { findUser } from "../services/user.service";
+import { registerUser } from "../services/auth.service";
 
 export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    const { firstName, lastName, email, password } = req.body;
-    const existingUser = await UserRepository.findOne({
-      where: { email: email },
-    });
+    const { email, password, passwordConfirm } = req.body;
+    if (password !== passwordConfirm) {
+      return res.send(401).send({
+        status: "Registration failed",
+        message: "Password Confirmation did not match Password",
+      });
+    }
+    const existingUser = await findUser(email);
 
     if (existingUser) {
       return res.status(401).send({
@@ -18,12 +23,8 @@ export const register = async (req: Request, res: Response) =>
       });
     }
 
-    const { password: _, ...newUser } = await UserRepository.save({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: await bcryptjs.hash(password, 10),
-    });
+    const newUser = await registerUser(req.body);
+
     return res.send({
       status: "Success",
       message: "Registration succeeded",
@@ -34,7 +35,7 @@ export const register = async (req: Request, res: Response) =>
 export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { email, password } = req.body;
-    const user = await UserRepository.findOne({ where: { email: email } });
+    const user = await findUser(email);
 
     if (user) {
       const validatePassword = await bcryptjs.compare(password, user.password);

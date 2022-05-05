@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
-import {
-  ThreadRepository,
-  MessageRepository,
-  UserRepository,
-} from "../database/repositories/repository";
+import { ThreadRepository } from "../database/repositories/repository";
+import { findThreadMessages, findThreads } from "../services/thread.service";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -22,22 +19,9 @@ export const createThread = async (req: Request, res: Response) =>
 
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    const user = req["user"];
-    const threads = await UserRepository.find({
-      relations: {
-        threads: {
-          participants: {
-            user: true,
-          },
-        },
-      },
-      where: {
-        id: user.id,
-      },
-    });
-
+    const { id } = req["user"];
+    const threads = await findThreads(id);
     return res.json({
-      message: "Users Thread Data",
       threads,
     });
   });
@@ -45,20 +29,9 @@ export const retrieveUsersThreads = async (req: Request, res: Response) =>
 export const retrieveThreadMessages = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { id } = req.params;
-
-    const threadMessages = await ThreadRepository.find({
-      relations: {
-        messages: {
-          sender: true,
-        },
-      },
-      where: {
-        id: parseInt(id),
-      },
-    });
+    const threadMessages = await findThreadMessages(parseInt(id));
 
     return res.json({
-      message: "Thread Messages",
       threadMessages,
     });
   });
