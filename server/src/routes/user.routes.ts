@@ -1,14 +1,20 @@
 import { Router } from "express";
-import { retrieveUserData } from "../controllers/user.controller";
+import {
+  deleteUserData,
+  retrieveUserData,
+  updateUserData,
+} from "../controllers/user.controller";
 import { register, login, logout } from "../controllers/auth.controller";
 import validateParams from "../utilities/handleParamValidation";
 import { isAuthenticated } from "../middleware/auth.middleware";
 
-const prefix = "user";
+const namespace = "user";
 
 export const userRoutes = (router: Router) => {
-  router.get(`/${prefix}/`, [isAuthenticated], retrieveUserData);
-  router.post(`/logout/${prefix}`, [isAuthenticated], logout);
-  router.post(`/register/${prefix}`, [validateParams("register")], register);
-  router.post(`/login/${prefix}`, [validateParams("login")], login);
+  router.get(`/${namespace}/`, [isAuthenticated], retrieveUserData);
+  router.post(`/logout/${namespace}`, [isAuthenticated], logout);
+  router.post(`/register/${namespace}`, [validateParams("register")], register);
+  router.post(`/login/${namespace}`, [validateParams("login")], login);
+  router.put(`/update/${namespace}`, [isAuthenticated], updateUserData);
+  router.delete(`delete/${namespace}`, [isAuthenticated], deleteUserData);
 };
