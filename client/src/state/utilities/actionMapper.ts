@@ -19,7 +19,10 @@ export const actionMapper = () => {
               status: StatusOptions.ONLINE,
             };
           }
-          return participant;
+          return {
+            ...participant,
+            status: StatusOptions.OFFLINE,
+          };
         }),
       };
     });

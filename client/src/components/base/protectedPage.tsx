@@ -1,8 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../state/store";
 import { useEffect, useState } from "react";
 import { AuthActions } from "../../state/actions/authActions";
+import "../../styles/loading.css";
 
 export const ProtectedPage = () => {
   const { setUserData, authenticated } = AuthActions();
@@ -22,7 +21,11 @@ export const ProtectedPage = () => {
   }, []);
 
   if (checkedAuthStatus !== true) {
-    return <div>Loading</div>;
+    return (
+      <div className="loading-container">
+        <div className="loader"></div>
+      </div>
+    );
   }
 
   return authenticated ? <Outlet /> : <Navigate to="/login" />;
