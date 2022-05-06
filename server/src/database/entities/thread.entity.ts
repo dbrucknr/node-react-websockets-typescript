@@ -4,6 +4,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  Index,
 } from "typeorm";
 import { User } from "./user.entity";
 import { Message } from "./message.entity";
@@ -11,6 +12,7 @@ import { Participant } from "./participant.entity";
 
 @Entity()
 export class Thread {
+  @Index()
   @PrimaryGeneratedColumn()
   id: number;
 

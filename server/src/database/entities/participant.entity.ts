@@ -4,12 +4,14 @@ import {
   JoinColumn,
   OneToOne,
   ManyToOne,
+  Index,
 } from "typeorm";
 import { Thread } from "./thread.entity";
 import { User } from "./user.entity";
 
 @Entity()
 export class Participant {
+  @Index()
   @PrimaryGeneratedColumn()
   id: number;
 

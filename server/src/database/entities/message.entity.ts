@@ -5,12 +5,14 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Index,
 } from "typeorm";
 import { Thread } from "./thread.entity";
 import { User } from "./user.entity";
 
 @Entity()
 export class Message {
+  @Index()
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,6 +22,7 @@ export class Message {
   @Column()
   content: string;
 
+  @Index()
   @ManyToOne(() => User)
   @JoinColumn({ name: "senderId" })
   sender: User;
@@ -27,6 +30,7 @@ export class Message {
   @CreateDateColumn()
   createdAt: string;
 
+  @Index()
   @ManyToOne(() => Thread)
   @JoinColumn({ name: "threadId" })
   thread: Thread;
