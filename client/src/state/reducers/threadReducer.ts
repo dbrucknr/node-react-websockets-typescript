@@ -9,6 +9,7 @@ export enum IThreadActions {
   SELECT_THREAD = "SELECT_THREAD",
   SET_THREADS = "SET_THREADS",
   SET_PARTICIPANT_ONLINE = "SET_PARTICIPANT_ONLINE",
+  SET_PARTICIPANT_OFFLINE = "SET_PARTICIPANT_OFFLINE",
   PARTICIPANTS_ONLINE = "PARTICIPANTS_ONLINE",
 }
 
@@ -48,6 +49,9 @@ const threadActionMap = {
   }),
   SET_PARTICIPANT_ONLINE: (state: IThreadState, payload: IUser) => ({
     ...setUserStatus(state, payload, StatusOptions.ONLINE),
+  }),
+  SET_PARTICIPANT_OFFLINE: (state: IThreadState, payload: IUser) => ({
+    ...setUserStatus(state, payload, StatusOptions.OFFLINE),
   }),
   PARTICIPANTS_ONLINE: (state: IThreadState, payload: number[]) => ({
     ...getOnlineUsers(state, payload),

@@ -40,7 +40,7 @@ export const actionMapper = () => {
         if (participant.user.id === payload.id) {
           return {
             ...participant,
-            status: StatusOptions.ONLINE, // TODO - Test and set with param 'status'
+            status: status, // TODO - Test and set with param 'status'
           };
         }
         return participant;

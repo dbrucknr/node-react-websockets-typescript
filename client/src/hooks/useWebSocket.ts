@@ -14,6 +14,7 @@ export const useWebSocket = () => {
       try {
         const connection = socket.getSocket();
         connection.emit("join", currentUser);
+        connection.emit("findOnlineUsers");
 
         connection.on("noArg", () => {
           console.log("Server issued noArg event");
@@ -30,7 +31,17 @@ export const useWebSocket = () => {
           });
         });
 
+        connection.on("offline", (user: IUser) => {
+          console.log("server issued a offline event");
+
+          dispatch({
+            type: IThreadActions.SET_PARTICIPANT_OFFLINE,
+            payload: user,
+          });
+        });
+
         connection.on("participantsOnline", (participantIds: number[]) => {
+          console.log("Attempting to see all users online", participantIds);
           dispatch({
             type: IThreadActions.PARTICIPANTS_ONLINE,
             payload: participantIds,

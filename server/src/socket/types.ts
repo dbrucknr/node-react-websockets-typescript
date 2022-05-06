@@ -6,6 +6,7 @@ export interface ServerToClientEvents {
   withAck: (d: string, callback: (e: number) => void) => void;
   participantsOnline: (onlineParticipantsIds: number[]) => void;
   online: (user: User) => void;
+  offline: (user: User) => void;
 }
 
 export interface ClientToServerEvents {

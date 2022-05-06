@@ -28,9 +28,6 @@ export const SocketEventHandler = (
   >,
   io: socketIO
 ) => {
-  // const usersOnline = new Map();
-  // const userSockets = new Map();
-
   const handleJoin = async (user: User) => {
     console.log("join event detected");
     const onlineParticipantsIds: number[] = [];
@@ -80,6 +77,7 @@ export const SocketEventHandler = (
     // TODO: This block of logic is not type-safe
     sockets.forEach((socket) => {
       try {
+        console.log("emitting participantsOnline");
         io.to(socket).emit("participantsOnline", onlineParticipantsIds);
       } catch (error) {
         console.error(
@@ -91,7 +89,44 @@ export const SocketEventHandler = (
   };
 
   const handleDisconnect = async () => {
-    console.log("disconnect event detected");
+    console.log("server: disconnect event detected");
+    if (userSockets.has(socket.id)) {
+      const id = userSockets.get(socket.id);
+      const user = usersOnline.get(id);
+
+      if (user.sockets.length > 1) {
+        user.sockets = user.sockets.filter((sock: number) => {
+          // Check this works
+          if (sock != id) {
+            return true;
+          }
+          userSockets.delete(sock);
+          return false;
+        });
+        usersOnline.set(user.id, user);
+      } else {
+        const participants = await findParticipants(user);
+
+        for (let i = 0; i < participants.length; i++) {
+          if (usersOnline.has(participants[i])) {
+            usersOnline.get(participants[i]).sockets.forEach((socket) => {
+              try {
+                console.log("emitting offline event");
+
+                io.to(socket).emit("offline", user);
+              } catch (error) {
+                console.error(
+                  "Error notifying participants user came offline",
+                  error
+                );
+              }
+            });
+          }
+        }
+        userSockets.delete(socket.id);
+        usersOnline.delete(user.id);
+      }
+    }
   };
 
   const handleMessage = async (message: Message) => {
