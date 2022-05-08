@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import { routes } from "../routes/routes";
 import cookieParser from "cookie-parser";
@@ -7,7 +7,7 @@ import http from "http";
 
 export const startApplication = () => {
   try {
-    const app = express();
+    const app: Application = express();
 
     app.use(express.json());
     app.use(cookieParser());
@@ -28,6 +28,8 @@ export const startApplication = () => {
     server.listen(8000, () => {
       console.log("API Active and listening to Port 8000");
     });
+
+    return server;
   } catch (error) {
     console.error("Unable to start application", error);
   }
