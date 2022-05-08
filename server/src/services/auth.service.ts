@@ -13,7 +13,8 @@ interface IRegistrationCredentials {
 
 export const verifyUser = async (email: string) =>
   await attemptQuery(async () => {
-    return await UserRepository.findOne({ where: { email: email } });
+    const user = await UserRepository.findOne({ where: { email: email } });
+    return user;
   });
 
 export const registerUser = async (credentials: IRegistrationCredentials) =>

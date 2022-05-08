@@ -1,7 +1,7 @@
-import { User } from "../database/entities/user.entity";
 import { UserRepository } from "../database/repositories/repository";
 import { attemptQuery } from "../utilities/attemptQuery";
-import { Request, Response } from "express";
+import { Request } from "express";
+import bcryptjs from "bcryptjs";
 
 export const findUser = async (id: number) =>
   await attemptQuery(async () => {
@@ -21,7 +21,13 @@ export const findUser = async (id: number) =>
 
 export const updateUser = async (currentUserId: number, req: Request) =>
   await attemptQuery(async () => {
-    return UserRepository.update(currentUserId, req.body);
+    const { firstName, lastName, email, password } = req.body;
+    return await UserRepository.update(currentUserId, {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: await bcryptjs.hash(password, 10),
+    });
   });
 
 // I may need to clear cookies / auth data after this process

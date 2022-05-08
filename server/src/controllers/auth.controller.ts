@@ -3,6 +3,7 @@ import { attemptRequest } from "../utilities/attemptRequest";
 import bcryptjs from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { verifyUser, registerUser } from "../services/auth.service";
+import { User } from "../database/entities/user.entity";
 
 export const register = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -13,7 +14,7 @@ export const register = async (req: Request, res: Response) =>
         message: "Password Confirmation did not match Password",
       });
     }
-    const existingUser = await verifyUser(email);
+    const existingUser: User = await verifyUser(email);
 
     if (existingUser) {
       return res.status(401).send({
@@ -34,11 +35,12 @@ export const register = async (req: Request, res: Response) =>
 export const login = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
     const { email, password } = req.body;
-    const user = await verifyUser(email);
+    const user: User = await verifyUser(email);
 
     if (user) {
       const validatePassword = await bcryptjs.compare(password, user.password);
       const token = validatePassword && sign({ id: user.id }, "secret");
+
       return res
         .cookie("jwt-messenger", token, {
           httpOnly: true,
