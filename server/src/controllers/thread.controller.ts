@@ -1,24 +1,44 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
-import { ThreadRepository } from "../database/repositories/repository";
+import {
+  ThreadRepository,
+  UserRepository,
+} from "../database/repositories/repository";
 import {
   findSpecificThread,
   findThreadMessages,
   findThreads,
 } from "../services/thread.service";
+import { User } from "../database/entities/user.entity";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    const { threadCreator } = req["user"];
-    // Assumes no group...
-    const { threadParticipants } = req.body;
+    const { id } = req["user"];
+
+    const threadCreator = await UserRepository.findOne({ where: { id } });
+    console.log(threadCreator);
+
+    // Pass as an array of ID's
+    const { selectedParticipants } = <{ selectedParticipants: number[] }>(
+      req.body
+    );
+
+    // Is this process necessary? Can I pass an array of ID's to
+    // ThreadRepository's participants?
+    let participants: User[] = [];
+    for (let id of selectedParticipants) {
+      const foundParticipant = await UserRepository.findOne({ where: { id } });
+      participants = [...participants, foundParticipant];
+    }
+    participants = [...participants, threadCreator];
+    console.log(participants);
 
     const thread = await ThreadRepository.save({
       type: "standard",
-      participants: [],
+      participants: participants,
       messages: [],
     });
-    return res.json({ message: "Create Thread", request: req.body });
+    return res.json({ message: "Create Thread", request: req.body, thread });
   });
 
 export const retrieveUsersThreads = async (req: Request, res: Response) =>

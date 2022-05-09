@@ -12,8 +12,8 @@ export const retrieveUserData = async (req: Request, res: Response) =>
 
 export const updateUserData = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
-    // const { id } = req["user"];
-    const { affected } = await updateUser(3, req);
+    const { id } = req["user"];
+    const { affected } = await updateUser(id, req);
     if (affected > 0) {
       return res.status(204).send("Success");
     }
