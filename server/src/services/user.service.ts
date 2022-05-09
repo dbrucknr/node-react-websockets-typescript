@@ -12,6 +12,8 @@ export const findUser = async (id: number) =>
             user: true,
           },
         },
+        participant: true,
+        messages: true,
       },
       where: {
         id,

@@ -42,6 +42,35 @@ export const seedExampleThreads = async () => {
     const ben = await findUser("ben.fielstra@email.com");
     const greg = await findUser("greg.white@email.com");
 
+    if (ben && derek) {
+      Promise.resolve(
+        await ThreadRepository.save({
+          type: "standard",
+          users: [ben, derek],
+          participants: [ben, derek],
+          messages: [],
+        })
+      );
+    } else {
+      throw new Error("Standard Thread Failed to Generate");
+    }
+
+    const BenAndDerek = await findThread(2);
+
+    Promise.resolve(
+      await ParticipantRepository.save({
+        thread: BenAndDerek,
+        user: ben,
+      })
+    );
+
+    Promise.resolve(
+      await ParticipantRepository.save({
+        thread: BenAndDerek,
+        user: derek,
+      })
+    );
+
     if (chase && ben && greg) {
       Promise.resolve(
         await ThreadRepository.save({
@@ -55,7 +84,7 @@ export const seedExampleThreads = async () => {
       throw new Error("Group Thread Failed to Generate");
     }
 
-    const ChaseAndBenAndGreg = await findThread(2);
+    const ChaseAndBenAndGreg = await findThread(3);
 
     const secondParticipantList = [
       {

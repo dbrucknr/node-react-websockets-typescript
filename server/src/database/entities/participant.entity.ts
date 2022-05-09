@@ -19,7 +19,7 @@ export class Participant {
   @JoinColumn({ name: "threadId" })
   thread: Thread;
 
-  @OneToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.threads)
   @JoinColumn({ name: "userId" })
   user: User;
 }

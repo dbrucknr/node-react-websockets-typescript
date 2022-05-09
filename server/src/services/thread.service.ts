@@ -34,7 +34,14 @@ export const findThreadMessages = async (id: number) =>
 
 export const findSpecificThread = async (id: number) =>
   await attemptQuery(async () => {
-    return await ThreadRepository.findOne({ where: { id } });
+    return await ThreadRepository.findOne({
+      relations: {
+        participants: {
+          user: true,
+        },
+      },
+      where: { id },
+    });
   });
 
 // TODO: Create an interface for params
