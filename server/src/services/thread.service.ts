@@ -6,11 +6,7 @@ export const findThreads = async (id: number) =>
   await attemptQuery(async () => {
     return await UserRepository.find({
       relations: {
-        threads: {
-          participants: {
-            user: true,
-          },
-        },
+        threads: true,
       },
       where: {
         id: id,
@@ -35,11 +31,6 @@ export const findThreadMessages = async (id: number) =>
 export const findSpecificThread = async (id: number) =>
   await attemptQuery(async () => {
     return await ThreadRepository.findOne({
-      relations: {
-        participants: {
-          user: true,
-        },
-      },
       where: { id },
     });
   });

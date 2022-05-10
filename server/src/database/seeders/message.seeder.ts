@@ -1,5 +1,5 @@
 import { MessageRepository } from "../repositories/repository";
-import { findThread } from "./thread.helpers";
+import { findThread } from "./threads/thread.helpers";
 import { findUser } from "./user.helpers";
 
 export const seedExampleMessages = async () => {

@@ -8,7 +8,6 @@ import {
   JoinTable,
 } from "typeorm";
 import { Message } from "./message.entity";
-import { Participant } from "./participant.entity";
 import { Thread } from "./thread.entity";
 
 @Entity()
@@ -30,13 +29,10 @@ export class User {
 
   @Column()
   password: string;
-  // make this thread.participants
+
   @ManyToMany(() => Thread, (thread) => thread.users)
   @JoinTable()
   threads: Thread[];
-
-  @OneToMany(() => Participant, (participant) => participant.thread)
-  participant: Participant[];
 
   @OneToMany(() => Message, (message) => message.sender)
   messages: Message[];

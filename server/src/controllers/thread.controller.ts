@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import {
+  // ParticipantRepository,
   ThreadRepository,
   UserRepository,
 } from "../database/repositories/repository";
@@ -23,6 +24,8 @@ export const createThread = async (req: Request, res: Response) =>
       req.body
     );
 
+    console.log("selectedParticipants", selectedParticipants);
+
     // Is this process necessary? Can I pass an array of ID's to
     // ThreadRepository's participants?
     let participants: User[] = [];
@@ -31,13 +34,19 @@ export const createThread = async (req: Request, res: Response) =>
       participants = [...participants, foundParticipant];
     }
     participants = [...participants, threadCreator];
+    console.log("#######################################");
+
     console.log(participants);
+
+    console.log("#######################################");
 
     const thread = await ThreadRepository.save({
       type: "standard",
+      users: participants,
       participants: participants,
       messages: [],
     });
+
     return res.json({ message: "Create Thread", request: req.body, thread });
   });
 

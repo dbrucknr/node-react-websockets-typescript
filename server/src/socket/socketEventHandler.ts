@@ -7,7 +7,7 @@ import {
   InterServerEvents,
   SocketData,
 } from "./types";
-import { ParticipantRepository } from "../database/repositories/repository";
+// import { ParticipantRepository } from "../database/repositories/repository";
 
 type socketIO = Server<
   ClientToServerEvents,
@@ -135,18 +135,19 @@ export const SocketEventHandler = (
 
   const findParticipants = async (user: User): Promise<User[]> => {
     try {
-      const results = await ParticipantRepository.query(`
-        SELECT p."userId" FROM "participant" as p
-        INNER JOIN (
-            SELECT t."id" FROM "thread" as t
-            WHERE EXISTS (
-                SELECT "u"."id" FROM "user" as u
-                INNER JOIN "participant" on "u"."id" = "participant"."userId"
-                WHERE u.id = ${user.id} AND t.id = "participant"."threadId"
-              )
-            ) AS pjoin on pjoin.id = "p"."threadId"
-            WHERE p."userId" != ${user.id};
-      `);
+      const results = [];
+      // const results = await ParticipantRepository.query(`
+      //   SELECT p."userId" FROM "participant" as p
+      //   INNER JOIN (
+      //       SELECT t."id" FROM "thread" as t
+      //       WHERE EXISTS (
+      //           SELECT "u"."id" FROM "user" as u
+      //           INNER JOIN "participant" on "u"."id" = "participant"."userId"
+      //           WHERE u.id = ${user.id} AND t.id = "participant"."threadId"
+      //         )
+      //       ) AS pjoin on pjoin.id = "p"."threadId"
+      //       WHERE p."userId" != ${user.id};
+      // `);
       return results.length > 0 ? results.map((value) => value.userId) : [];
     } catch (error) {
       console.error(error);

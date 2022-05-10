@@ -1,13 +1,18 @@
 import { initializeDatabaseConnection } from "../../config/database";
 import { seedExampleUsers } from "./user.seeder";
-import { seedExampleThreads } from "./thread.seeder";
+import { seedExampleThreads } from "./threads/thread.seeder";
 import { seedExampleMessages } from "./message.seeder";
 
 initializeDatabaseConnection(async () => {
   try {
-    const users = await seedExampleUsers();
-    const threads = await seedExampleThreads();
-    const messages = await seedExampleMessages();
+    await seedExampleUsers();
+    console.log("Finished Seeding Users");
+
+    await seedExampleThreads();
+    console.log("Finished Seeding Threads");
+
+    await seedExampleMessages();
+    console.log("Finished Seeding Messages");
 
     process.exit(0);
   } catch (error) {
