@@ -1,5 +1,5 @@
 import bcryptjs from "bcryptjs";
-import { UserRepository } from "../repositories/repository";
+import { UserRepository } from "../../repositories/repository";
 
 export const generateSampleUsers = async () => {
   return Promise.all([
