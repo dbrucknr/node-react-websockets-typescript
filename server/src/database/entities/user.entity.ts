@@ -31,7 +31,7 @@ export class User {
   password: string;
 
   @ManyToMany(() => Thread, (thread) => thread.users)
-  @JoinTable()
+  @JoinTable({ name: "participant" })
   threads: Thread[];
 
   @OneToMany(() => Message, (message) => message.sender)

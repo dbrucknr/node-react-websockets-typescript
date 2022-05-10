@@ -1,5 +1,5 @@
 import { initializeDatabaseConnection } from "../../config/database";
-import { seedExampleUsers } from "./user.seeder";
+import { seedExampleUsers } from "./users/user.seeder";
 import { seedExampleThreads } from "./threads/thread.seeder";
 import { seedExampleMessages } from "./message.seeder";
 
