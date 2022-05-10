@@ -1,7 +1,7 @@
 import { ThreadRepository } from "../../repositories/repository";
-import { findUser } from "../user.helpers";
+import { findUser } from "../users/user.helpers";
 
-export const findThread = async (id: number, participants: boolean = false) =>
+export const findThread = async (id: number) =>
   await ThreadRepository.findOne({
     where: {
       id,
