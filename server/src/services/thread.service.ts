@@ -49,7 +49,6 @@ export const saveThread = async () =>
     await ThreadRepository.save({
       type: "standard",
       users: [],
-      participants: [],
       messages: [],
     });
   });

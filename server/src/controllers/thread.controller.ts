@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import {
-  // ParticipantRepository,
   ThreadRepository,
   UserRepository,
 } from "../database/repositories/repository";
@@ -43,7 +42,6 @@ export const createThread = async (req: Request, res: Response) =>
     const thread = await ThreadRepository.save({
       type: "standard",
       users: participants,
-      participants: participants,
       messages: [],
     });
 
