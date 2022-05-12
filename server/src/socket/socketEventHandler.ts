@@ -8,6 +8,7 @@ import {
   SocketData,
 } from "./types";
 import { ThreadRepository } from "../database/repositories/repository";
+import { ReactiveDataStore } from "./socket-state";
 
 type socketIO = Server<
   ClientToServerEvents,
@@ -18,6 +19,8 @@ type socketIO = Server<
 
 const usersOnline = new Map();
 const userSockets = new Map();
+
+const socketStore = ReactiveDataStore({ usersOnline, userSockets });
 
 export const SocketEventHandler = (
   socket: Socket<
@@ -35,8 +38,15 @@ export const SocketEventHandler = (
 
     const setIncomingUserOnline = () => {
       usersOnline.set(user.id, { id: user.id, sockets: [socket.id] });
+      // Experimental Reactive Socket Store:
+      socketStore.usersOnline.set(user.id, {
+        id: user.id,
+        sockets: [socket.id],
+      });
       sockets.push(socket.id);
       userSockets.set(socket.id, user.id);
+      // Experimental Reactive Socket Store:
+      socketStore.userSockets.set(socket.id, user.id);
     };
 
     const updateExistingUserSockets = () => {

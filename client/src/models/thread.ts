@@ -4,7 +4,6 @@ import { StatusOptions } from "../state/utilities/actionMapper";
 export interface IParticipant {
   id: number;
   thread: IThread;
-  user: IUser;
   status: StatusOptions;
 }
 
@@ -12,7 +11,6 @@ export const emptyParticipant = (): IParticipant => {
   return {
     id: 0,
     thread: emptyThread(),
-    user: emptyUser(),
     status: StatusOptions.OFFLINE,
   };
 };
@@ -20,7 +18,6 @@ export interface IThread {
   id: number;
   type: string;
   users: IUser[];
-  participants: IParticipant[];
   messages: IMessage[];
 }
 
@@ -29,7 +26,6 @@ export const emptyThread = (): IThread => {
     id: 0,
     type: "",
     users: [],
-    participants: [],
     messages: [],
   };
 };
@@ -38,7 +34,6 @@ export class Thread {
   id: number = 0;
   type: string = "";
   users: IUser[] = [];
-  participants: IParticipant[] = [];
   messages: IMessage[] = [];
 
   constructor(props: IThread) {
@@ -46,7 +41,7 @@ export class Thread {
   }
 
   get participantCount() {
-    return this.participants.length;
+    return this.users.length;
   }
 
   get messageCount() {

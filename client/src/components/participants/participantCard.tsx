@@ -1,14 +1,15 @@
 import { IParticipant } from "../../models/thread";
 import { FC } from "react";
+import { IUser } from "../../models/user";
 
 interface ParticipantCardProps {
-  participant: IParticipant;
+  participant: IUser;
 }
 
 export const ParticipantCard: FC<ParticipantCardProps> = ({ participant }) => {
   return (
     <div id="participant">
-      {participant.user.firstName} {participant.user.lastName}
+      {participant.firstName} {participant.lastName}
       <h1>{participant.status}</h1>
     </div>
   );

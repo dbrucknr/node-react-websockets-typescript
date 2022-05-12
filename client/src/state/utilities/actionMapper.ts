@@ -12,8 +12,8 @@ export const actionMapper = () => {
     const threads = state.threads.map((thread) => {
       return {
         ...thread,
-        participants: thread.participants.map((participant) => {
-          if (payload.includes(participant.user.id)) {
+        participants: thread.users.map((participant) => {
+          if (payload.includes(participant.id)) {
             return {
               ...participant,
               status: StatusOptions.ONLINE,
@@ -39,8 +39,8 @@ export const actionMapper = () => {
   ) => {
     let selectedThreadCopy = { ...state.selectedThread };
     const threadsCopy = state.threads.map((thread) => {
-      const participants = thread.participants.map((participant) => {
-        if (participant.user.id === payload.id) {
+      const participants = thread.users.map((participant) => {
+        if (participant.id === payload.id) {
           return {
             ...participant,
             status: status, // TODO - Test and set with param 'status'
@@ -52,7 +52,7 @@ export const actionMapper = () => {
       if (thread.id === selectedThreadCopy.id) {
         selectedThreadCopy = {
           ...selectedThreadCopy,
-          participants,
+          users: participants,
         };
       }
       return {

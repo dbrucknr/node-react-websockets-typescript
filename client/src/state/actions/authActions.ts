@@ -43,6 +43,7 @@ export const AuthActions = () => {
 
   const setUserData = async () => {
     const response = await retrieveUserData();
+    console.log(response);
     if (response) {
       dispatch({ type: IAuthActions.LOGIN, payload: response });
 
@@ -50,6 +51,8 @@ export const AuthActions = () => {
       // two copies of threads - one nested in the user object and
       // one more in the thread state
       const { threads } = response;
+      console.log("THREADS", threads);
+
       dispatch({ type: IThreadActions.SET_THREADS, payload: threads });
 
       navigate("/");

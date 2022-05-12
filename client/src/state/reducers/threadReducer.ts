@@ -43,10 +43,14 @@ const threadActionMap = {
     ...state,
     selectedThread: payload,
   }),
-  SET_THREADS: (state: IThreadState, payload: IThread[]) => ({
-    ...state,
-    threads: payload,
-  }),
+  SET_THREADS: (state: IThreadState, payload: IThread[]) => {
+    console.log("SET_THREADS", payload);
+
+    return {
+      ...state,
+      threads: payload,
+    };
+  },
   SET_PARTICIPANT_ONLINE: (state: IThreadState, payload: IUser) => ({
     ...setUserStatus(state, payload, StatusOptions.ONLINE),
   }),

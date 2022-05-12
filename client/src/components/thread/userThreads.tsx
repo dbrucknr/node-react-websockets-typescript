@@ -23,9 +23,9 @@ export const UserThreads = () => {
       {threads.map((thread) => {
         return (
           <div key={thread.id} onClick={() => handleClick(thread)}>
-            {thread.participants.map((participant) => {
+            {thread.users.map((participant) => {
               <h1>{participant.status}</h1>;
-              return participant.user.id !== self.id ? (
+              return participant.id !== self.id ? (
                 <ParticipantCard
                   key={participant.id}
                   participant={participant}
