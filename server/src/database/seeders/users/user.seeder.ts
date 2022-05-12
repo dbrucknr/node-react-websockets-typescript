@@ -1,4 +1,4 @@
-import { UserRepository } from "../repositories/repository";
+import { UserRepository } from "../../repositories/repository";
 import { generateSampleUsers } from "./user.helpers";
 
 export const seedExampleUsers = async () => {

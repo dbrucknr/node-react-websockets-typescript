@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
 } from "typeorm";
-import { Participant } from "./participant.entity";
+import { Message } from "./message.entity";
 import { Thread } from "./thread.entity";
 
 @Entity()
@@ -31,11 +31,11 @@ export class User {
   password: string;
 
   @ManyToMany(() => Thread, (thread) => thread.users)
-  @JoinTable()
+  @JoinTable({ name: "participant" })
   threads: Thread[];
 
-  @OneToMany(() => Participant, (participant) => participant.thread)
-  threadParticipant: Participant[];
+  @OneToMany(() => Message, (message) => message.sender)
+  messages: Message[];
 
   toJSON() {
     delete this.password;

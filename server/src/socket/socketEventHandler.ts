@@ -7,7 +7,7 @@ import {
   InterServerEvents,
   SocketData,
 } from "./types";
-import { ParticipantRepository } from "../database/repositories/repository";
+import { ThreadRepository } from "../database/repositories/repository";
 
 type socketIO = Server<
   ClientToServerEvents,
@@ -135,7 +135,8 @@ export const SocketEventHandler = (
 
   const findParticipants = async (user: User): Promise<User[]> => {
     try {
-      const results = await ParticipantRepository.query(`
+      // Check and see if ThreadRepository is appropriate for this query:
+      const results = await ThreadRepository.query(`
         SELECT p."userId" FROM "participant" as p
         INNER JOIN (
             SELECT t."id" FROM "thread" as t

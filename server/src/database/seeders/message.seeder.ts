@@ -1,10 +1,10 @@
 import { MessageRepository } from "../repositories/repository";
-import { findThread } from "./thread.helpers";
-import { findUser } from "./user.helpers";
+import { findThread } from "./threads/thread.helpers";
+import { findUser } from "./users/user.helpers";
 
 export const seedExampleMessages = async () => {
   try {
-    const thread = await findThread(1, true);
+    const thread = await findThread(1);
 
     const jennifer = await findUser("jennifer.godlew@email.com");
     const derek = await findUser("derek.bruckner@email.com");
@@ -29,7 +29,7 @@ export const seedExampleMessages = async () => {
       })
     );
 
-    const secondThread = await findThread(2, true);
+    const secondThread = await findThread(2);
 
     const chase = await findUser("chase.pietrangelo@email.com");
     const ben = await findUser("ben.fielstra@email.com");

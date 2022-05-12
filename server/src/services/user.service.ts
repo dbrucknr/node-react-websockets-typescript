@@ -8,9 +8,7 @@ export const findUser = async (id: number) =>
     return await UserRepository.findOne({
       relations: {
         threads: {
-          participants: {
-            user: true,
-          },
+          users: true,
         },
       },
       where: {

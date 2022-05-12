@@ -1,16 +1,14 @@
 import { attemptQuery } from "../utilities/attemptQuery";
 import { UserRepository } from "../database/repositories/repository";
 import { ThreadRepository } from "../database/repositories/repository";
+import { User } from "../database/entities/user.entity";
+import { Equal, In } from "typeorm";
 
 export const findThreads = async (id: number) =>
   await attemptQuery(async () => {
     return await UserRepository.find({
       relations: {
-        threads: {
-          participants: {
-            user: true,
-          },
-        },
+        threads: true,
       },
       where: {
         id: id,
@@ -34,29 +32,55 @@ export const findThreadMessages = async (id: number) =>
 
 export const findSpecificThread = async (id: number) =>
   await attemptQuery(async () => {
-    return await ThreadRepository.findOne({ where: { id } });
+    return await ThreadRepository.findOne({
+      where: { id },
+    });
   });
 
-// TODO: Create an interface for params
-// I think I'll need a participant, and the user
-// trying to create the thread, but...maybe not
-export const saveThread = async () =>
+export const saveThread = async (participantIDs: number[]) =>
   await attemptQuery(async () => {
-    // 1. Need selected Participant(s)
-    // ?Could save initial thread with only the logged in user as owner?
-    // Add participants through form / button?
+    let participants: User[] = [];
+    for (let id of participantIDs) {
+      const foundParticipant = await UserRepository.findOne({ where: { id } });
+      participants = [...participants, foundParticipant];
+    }
 
-    // I may need a "friend-list", or some sort of online user list
-    // Select a user to start a message thread
-    await ThreadRepository.save({
+    return await ThreadRepository.save({
       type: "standard",
-      users: [],
-      participants: [],
+      users: participants,
       messages: [],
     });
   });
 
-export const deleteThread = async (id: number) =>
+export const deleteSpecifiedThread = async (id: number) =>
   await attemptQuery(async () => {
     return await ThreadRepository.delete(id);
+  });
+
+export const checkForExistingThread = async (
+  creatorID: number,
+  selectedParticipantIDs: number[]
+) =>
+  await attemptQuery(async () => {
+    const arrayOfExistingThreadUsers = await ThreadRepository.query(`
+      WITH participant_master
+        AS (
+          SELECT "userId", "threadId",
+            array_agg("userId") OVER (PARTITION BY "threadId") participants
+          FROM participant
+        )
+      SELECT CASE WHEN
+          participant_master.participants::INTEGER[] = ARRAY[${selectedParticipantIDs}]::INTEGER[]
+              THEN true ELSE false
+      END
+      FROM participant_master
+          WHERE "userId" = ${creatorID};
+    `);
+
+    console.log("test result", arrayOfExistingThreadUsers);
+
+    if (arrayOfExistingThreadUsers.length > 1) {
+      return true;
+    }
+    return false;
   });
