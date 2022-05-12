@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
 import { attemptRequest } from "../utilities/attemptRequest";
 import {
-  ThreadRepository,
-  UserRepository,
-} from "../database/repositories/repository";
-import {
+  checkForExistingThread,
   findSpecificThread,
   findThreadMessages,
   findThreads,
   saveThread,
 } from "../services/thread.service";
-import { User } from "../database/entities/user.entity";
 
 export const createThread = async (req: Request, res: Response) =>
   await attemptRequest(req, res, async () => {
@@ -19,11 +15,25 @@ export const createThread = async (req: Request, res: Response) =>
     const { selectedParticipants } = <{ selectedParticipants: number[] }>(
       req.body
     );
+    const type = selectedParticipants.length > 2 ? "group" : "standard";
 
-    const userIDs = selectedParticipants.concat(id);
-    const thread = await saveThread(userIDs);
+    // const userIDs = selectedParticipants.concat(id);
+    // Before creating thread, verify that current participants don't already have a
+    // thread.
+    const existingThread = await checkForExistingThread(
+      id,
+      selectedParticipants
+    );
+    if (existingThread) {
+      return res.status(409).json({
+        message: `You already have a thread with the selected ${
+          type === "standard" ? "participant" : "participants"
+        }`,
+      });
+    }
 
-    return res.json({ message: "Create Thread", request: req.body, thread });
+    // const thread = await saveThread(userIDs);
+    return res.json({ message: "Create Thread" });
   });
 
 export const retrieveUsersThreads = async (req: Request, res: Response) =>
