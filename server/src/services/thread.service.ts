@@ -44,17 +44,15 @@ export const saveThread = async (participantIDs: number[]) =>
       const foundParticipant = await UserRepository.findOne({ where: { id } });
       participants = [...participants, foundParticipant];
     }
-    // const existingThread = await checkForExistingThread(participants);
-    // console.log("In saveThread:", existingThread);
 
-    // return await ThreadRepository.save({
-    //   type: "standard",
-    //   users: participants,
-    //   messages: [],
-    // });
+    return await ThreadRepository.save({
+      type: "standard",
+      users: participants,
+      messages: [],
+    });
   });
 
-export const deleteThread = async (id: number) =>
+export const deleteSpecifiedThread = async (id: number) =>
   await attemptQuery(async () => {
     return await ThreadRepository.delete(id);
   });
@@ -64,20 +62,19 @@ export const checkForExistingThread = async (
   selectedParticipantIDs: number[]
 ) =>
   await attemptQuery(async () => {
-    // Does this handle Group types?
-    console.log(selectedParticipantIDs);
-
     const arrayOfExistingThreadUsers = await ThreadRepository.query(`
-    WITH participant_master
-    AS (SELECT "userId", "threadId",
-       array_agg("userId") OVER(PARTITION BY "threadId") participants
-    FROM participant)
-    SELECT CASE WHEN
-            participant_master.participants::INTEGER[] = ARRAY[${selectedParticipantIDs}]::INTEGER[]
-                THEN true ELSE false
-        END
-    FROM participant_master
-        WHERE "userId" = ${creatorID};
+      WITH participant_master
+        AS (
+          SELECT "userId", "threadId",
+            array_agg("userId") OVER (PARTITION BY "threadId") participants
+          FROM participant
+        )
+      SELECT CASE WHEN
+          participant_master.participants::INTEGER[] = ARRAY[${selectedParticipantIDs}]::INTEGER[]
+              THEN true ELSE false
+      END
+      FROM participant_master
+          WHERE "userId" = ${creatorID};
     `);
 
     console.log("test result", arrayOfExistingThreadUsers);
