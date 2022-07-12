@@ -54,3 +54,11 @@ a {
     color:white;
     text-decoration: none;
 }
+
+.user-options {
+    color: white;
+    margin-left: 5px;
+    border: 2px;
+    border-style: solid;
+    border-color: #3178c6;
+}

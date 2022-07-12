@@ -1,4 +1,3 @@
-import { IParticipant } from "../../models/thread";
 import { FC } from "react";
 import { IUser } from "../../models/user";
 

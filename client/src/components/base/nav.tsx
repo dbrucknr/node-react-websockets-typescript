@@ -21,9 +21,14 @@ export const Navigation = () => {
       </div>
       <div id="selections">
         {authStatus ? (
-          <div id="welcome-message">
-            Welcome {user.firstName} {user.status}
-          </div>
+          <>
+            <div id="welcome-message">
+              Welcome {user.firstName} {user.status}
+            </div>
+            <div className="user-options">
+              <p className="options">Options</p>
+            </div>
+          </>
         ) : (
           <div>
             <p>

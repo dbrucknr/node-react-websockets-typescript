@@ -1,4 +1,4 @@
-import { IUser, emptyUser } from "./user";
+import { IUser } from "./user";
 import { IMessage } from "./message";
 import { StatusOptions } from "../state/utilities/actionMapper";
 export interface IParticipant {

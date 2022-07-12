@@ -27,5 +27,11 @@ export const ThreadService = () => {
       return false;
     });
 
-  return { retrieveThreadMessages };
+  const retrieveUserThreads = async () =>
+    await attemptServiceRequest(async () => {});
+
+  const deleteThread = async (id: number) =>
+    await attemptServiceRequest(async () => {});
+
+  return { retrieveThreadMessages, retrieveUserThreads, deleteThread };
 };
